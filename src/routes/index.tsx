@@ -167,7 +167,7 @@ function Hero() {
               download="LowCoreLauncherSetup.exe"
               className="btn-glow btn-glow-hover group inline-flex items-center gap-3 rounded-xl bg-primary px-7 py-4 text-base font-semibold text-primary-foreground transition-all hover:scale-[1.02] active:scale-[0.98]"
             >
-              <Download className="h-5 w-5 transition-transform group-hover:translate-y-0.5" />
+              <DownloadIcon className="h-5 w-5 transition-transform group-hover:translate-y-0.5" />
               <span className="flex flex-col items-start leading-tight">
                 <span>Download for Windows (.exe)</span>
                 <span className="text-xs font-normal opacity-80">v1.0.0-Beta • Instant Setup</span>
@@ -376,7 +376,7 @@ function Download() {
             download="LowCoreLauncherSetup.exe"
             className="btn-glow btn-glow-hover group inline-flex items-center gap-3 rounded-xl bg-primary px-7 py-4 text-base font-semibold text-primary-foreground transition-all hover:scale-[1.02] active:scale-[0.98]"
           >
-            <Download className="h-5 w-5 transition-transform group-hover:translate-y-0.5" />
+            <DownloadIcon className="h-5 w-5 transition-transform group-hover:translate-y-0.5" />
             <span className="flex flex-col items-start leading-tight">
               <span>Download LowCoreLauncherSetup.exe</span>
               <span className="text-xs font-normal opacity-80">v1.0.0-Beta • Windows 64-bit</span>
