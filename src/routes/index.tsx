@@ -68,7 +68,7 @@ const FEATURES = [
     body: "Keep separate mods, configs, and worlds without corrupting standard folders.",
   },
   {
-    icon: UserSwitch,
+    icon: UsersRound,
     title: "Seamless Accounts",
     body: "Switch between Microsoft accounts and offline profiles effortlessly.",
   },
