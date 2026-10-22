@@ -3,7 +3,7 @@ import {
   Zap,
   Gauge,
   Layers,
-  UserSwitch,
+  UsersRound,
   PackageSearch,
   ShieldCheck,
   Download as DownloadIcon,
