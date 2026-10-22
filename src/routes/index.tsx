@@ -95,7 +95,7 @@ function Logo() {
   return (
     <a href="#top" className="flex items-center gap-2.5">
       <img src={lowcoreLogo.url} alt="LowCore logo" className="h-8 w-8" />
-      <span className="font-display text-lg font-700 font-bold tracking-tight text-foreground">
+      <span className="font-display text-lg font-bold tracking-tight text-foreground">
         LowCore
       </span>
       <span className="rounded-full bg-coral/15 px-2 py-0.5 font-display text-[10px] font-bold uppercase tracking-widest text-coral ring-1 ring-coral/30">
