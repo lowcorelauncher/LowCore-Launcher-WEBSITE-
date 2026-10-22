@@ -15,7 +15,7 @@ import {
   FileCheck2,
 } from "lucide-react";
 
-import heroDashboard from "@/assets/hero-dashboard.png";
+import launcherScreenshot from "@/assets/launcher-screenshot.png.asset.json";
 import lowcoreLogo from "@/assets/lowcore-logo.png.asset.json";
 
 export const Route = createFileRoute("/")({
@@ -185,18 +185,24 @@ function Hero() {
           </div>
         </div>
 
-        <div className="relative mx-auto mt-16 max-w-4xl sm:mt-20">
+        <div className="relative mx-auto mt-16 max-w-2xl sm:mt-20">
           <div
             className="animate-pulse-glow absolute -inset-8 rounded-[2rem] bg-coral/10 blur-3xl"
             aria-hidden="true"
           />
-          <div className="glass-card animate-float-soft overflow-hidden rounded-2xl shadow-2xl">
-            <img
-              src={heroDashboard}
-              alt="LowCore Launcher dashboard with game instances and launch button"
-              width={1600}
-              height={1008}
-              className="block w-full rounded-2xl"
+          <div className="animate-float-soft flex flex-col items-center">
+            <div className="glass-card overflow-hidden rounded-t-2xl rounded-b-md shadow-2xl ring-1 ring-border">
+              <img
+                src={launcherScreenshot.url}
+                alt="Real LowCore Launcher window: Play tab with isolated instance, account switching, memory allocation and PLAY button"
+                width={902}
+                height={834}
+                className="block w-full"
+              />
+            </div>
+            <div
+              className="h-4 w-[106%] rounded-b-2xl bg-gradient-to-b from-secondary to-muted shadow-xl ring-1 ring-border"
+              aria-hidden="true"
             />
           </div>
         </div>
@@ -269,17 +275,29 @@ function Optimization() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            {STATS.map((stat) => (
-              <div key={stat.label} className="glass-card card-lift rounded-2xl p-6">
-                <stat.icon className="h-5 w-5 text-coral" />
-                <div className="mt-4 font-display text-3xl font-bold text-foreground sm:text-4xl">
-                  {stat.value}
-                </div>
-                <div className="mt-1 text-sm text-muted-foreground">{stat.label}</div>
-              </div>
-            ))}
+          <div className="relative">
+            <div className="glass-card card-lift overflow-hidden rounded-2xl shadow-2xl">
+              <img
+                src={launcherScreenshot.url}
+                alt="LowCore Launcher window with instance, account and memory controls"
+                width={902}
+                height={834}
+                className="block w-full"
+              />
+            </div>
           </div>
+        </div>
+
+        <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-4">
+          {STATS.map((stat) => (
+            <div key={stat.label} className="glass-card card-lift rounded-2xl p-5">
+              <stat.icon className="h-5 w-5 text-coral" />
+              <div className="mt-4 font-display text-2xl font-bold text-foreground sm:text-3xl">
+                {stat.value}
+              </div>
+              <div className="mt-1 text-sm text-muted-foreground">{stat.label}</div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
