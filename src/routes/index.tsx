@@ -87,7 +87,7 @@ const FEATURES = [
 const STATS = [
   { icon: MonitorDown, value: "~25MB", label: "Total download footprint" },
   { icon: Cpu, value: "Native", label: "64-bit Windows toolchain" },
-  { icon: Download, value: "0", label: "Chromium or Electron deps" },
+  { icon: DownloadIcon, value: "0", label: "Chromium or Electron deps" },
   { icon: FileCheck2, value: "0/62", label: "VirusTotal, fully clean" },
 ];
 
