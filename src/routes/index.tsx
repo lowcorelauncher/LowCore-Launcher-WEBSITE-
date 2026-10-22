@@ -6,7 +6,7 @@ import {
   UserSwitch,
   PackageSearch,
   ShieldCheck,
-  Download,
+  Download as DownloadIcon,
   ArrowRight,
   MessageSquare,
   Github,
