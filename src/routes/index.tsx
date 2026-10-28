@@ -13,9 +13,15 @@ import {
   Cpu,
   MonitorDown,
   FileCheck2,
+  Rocket,
+  Search,
+  CloudDownload,
+  Puzzle,
 } from "lucide-react";
 
 import launcherScreenshot from "@/assets/launcher-screenshot.png.asset.json";
+import launcherPlay from "@/assets/launcher-play.png.asset.json";
+import launcherMods from "@/assets/launcher-mods.png.asset.json";
 import lowcoreLogo from "@/assets/lowcore-logo.png.asset.json";
 
 export const Route = createFileRoute("/")({
@@ -47,7 +53,8 @@ const GITHUB_URL = "https://github.com/lowcore/launcher";
 
 const NAV_LINKS = [
   { label: "Features", href: "#features" },
-  { label: "Optimization", href: "#optimization" },
+  { label: "Mods", href: "#mods" },
+  { label: "Performance", href: "#performance" },
   { label: "Security", href: "#security" },
   { label: "Discord", href: DISCORD_URL, external: true },
 ];
@@ -86,7 +93,7 @@ const FEATURES = [
 ];
 
 const STATS = [
-  { icon: MonitorDown, value: "~25MB", label: "Total download footprint" },
+  { icon: MonitorDown, value: "90MB", label: "Entire launcher footprint" },
   { icon: Cpu, value: "Native", label: "64-bit Windows toolchain" },
   { icon: DownloadIcon, value: "0", label: "Chromium or Electron deps" },
   { icon: FileCheck2, value: "0/62", label: "VirusTotal, fully clean" },
@@ -146,7 +153,7 @@ function Hero() {
               <ShieldCheck className="h-3.5 w-3.5" />
               VirusTotal 0/62 Clean
             </span>
-            <span className="chip">~25MB Footprint</span>
+            <span className="chip">~90MB Footprint</span>
           </div>
 
           <h1 className="font-display text-5xl font-bold tracking-tight text-foreground sm:text-6xl md:text-7xl">
@@ -159,7 +166,8 @@ function Hero() {
 
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
             A bloat-free, native Minecraft launcher built for pure performance, instance
-            isolation, and ultra-low RAM usage.
+            isolation, and ultra-low RAM usage. Lightning-fast, easy to use, and it handles
+            everything in one place.
           </p>
 
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
