@@ -115,7 +115,7 @@ function Navbar() {
             <a
               key={link.label}
               href={link.href}
-              {...("external" in link ? { target: "_blank", rel: "noreferrer" } : {})}
+              {...("external" in link ? { target: "_blank", rel: "noopener noreferrer" } : {})}
               className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
               {link.label}
