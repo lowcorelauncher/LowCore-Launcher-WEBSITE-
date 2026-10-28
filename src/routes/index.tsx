@@ -19,7 +19,7 @@ import {
   Puzzle,
 } from "lucide-react";
 
-import launcherScreenshot from "@/assets/launcher-screenshot.png.asset.json";
+import launcherHero from "@/assets/launcher-hero.png.asset.json";
 import launcherPlay from "@/assets/launcher-play.png.asset.json";
 import launcherMods from "@/assets/launcher-mods.png.asset.json";
 import lowcoreLogo from "@/assets/lowcore-logo.png.asset.json";
@@ -202,10 +202,10 @@ function Hero() {
           <div className="animate-float-soft flex flex-col items-center">
             <div className="glass-card overflow-hidden rounded-t-2xl rounded-b-md shadow-2xl ring-1 ring-border">
               <img
-                src={launcherScreenshot.url}
+                src={launcherHero.url}
                 alt="Real LowCore Launcher window: Play tab with isolated instance, account switching, memory allocation and PLAY button"
-                width={902}
-                height={834}
+                width={898}
+                height={795}
                 className="block w-full"
               />
             </div>
