@@ -41,7 +41,7 @@ export const Route = createFileRoute("/")({
 });
 
 const DOWNLOAD_URL = "https://github.com/lowcore/launcher/releases/latest/download/LowCoreLauncherSetup.exe";
-const DISCORD_URL = "https://discord.gg/lowcore";
+const DISCORD_URL = "https://discord.gg/PxF3vqqstC";
 const GITHUB_URL = "https://github.com/lowcore/launcher";
 
 const NAV_LINKS = [
@@ -176,7 +176,7 @@ function Hero() {
             <a
               href={DISCORD_URL}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="glass-card card-lift inline-flex items-center gap-2.5 rounded-xl px-6 py-4 text-base font-semibold text-foreground"
             >
               <MessageSquare className="h-5 w-5 text-mint" />
@@ -421,7 +421,7 @@ function Footer() {
           <a
             href={DISCORD_URL}
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             aria-label="Discord"
             className="glass-card card-lift rounded-xl p-2.5 text-muted-foreground transition-colors hover:text-foreground"
           >
@@ -430,7 +430,7 @@ function Footer() {
           <a
             href={GITHUB_URL}
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             aria-label="GitHub"
             className="glass-card card-lift rounded-xl p-2.5 text-muted-foreground transition-colors hover:text-foreground"
           >
