@@ -255,25 +255,93 @@ function Features() {
   );
 }
 
-function Optimization() {
+function ModsSection() {
+  const points = [
+    {
+      icon: Search,
+      title: "One search box for everything",
+      body: "Find mods, resource packs, and shaders from a single, clean search bar.",
+    },
+    {
+      icon: Puzzle,
+      title: "Dependency resolution built in",
+      body: "Pick a mod and LowCore resolves every dependency for your instance automatically.",
+    },
+    {
+      icon: CloudDownload,
+      title: "Install with one click",
+      body: "Download straight to the selected instance — no manual file juggling.",
+    },
+  ];
+
+  return (
+    <section id="mods" className="mx-auto max-w-6xl scroll-mt-20 px-4 py-20 sm:px-6 sm:py-28">
+      <div className="grid items-center gap-12 lg:grid-cols-2">
+        <div className="relative order-2 lg:order-1">
+          <div className="glass-card card-lift overflow-hidden rounded-2xl shadow-2xl">
+            <img
+              src={launcherMods.url}
+              alt="LowCore Content Browser searching mods with one-click download to a selected instance"
+              width={896}
+              height={797}
+              className="block w-full"
+            />
+          </div>
+        </div>
+        <div className="order-1 lg:order-2">
+          <p className="font-display text-sm font-semibold uppercase tracking-widest text-coral">
+            Mod Management
+          </p>
+          <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            Easy mod management, zero headaches.
+          </h2>
+          <p className="mt-4 leading-relaxed text-muted-foreground">
+            Managing mods is lightning-fast and easy: search, click, done. LowCore resolves
+            every dependency for you and installs straight into your instance — everything
+            handled in one place, without touching a single folder.
+          </p>
+          <div className="mt-8 space-y-5">
+            {points.map((point) => (
+              <div key={point.title} className="flex items-start gap-4">
+                <div className="inline-flex shrink-0 rounded-xl bg-coral/10 p-2.5 text-coral ring-1 ring-coral/20">
+                  <point.icon className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="font-display font-semibold text-foreground">{point.title}</h3>
+                  <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                    {point.body}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Performance() {
   return (
     <section
-      id="optimization"
+      id="performance"
       className="relative scroll-mt-20 border-y border-border bg-card/40 py-20 sm:py-28"
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="grid items-center gap-12 lg:grid-cols-2">
           <div>
             <p className="font-display text-sm font-semibold uppercase tracking-widest text-mint">
-              Optimization
+              Lightweight &amp; Fast
             </p>
             <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-              Performance, tuned out of the box.
+              The entire launcher is just 90MB.
             </h2>
             <p className="mt-4 leading-relaxed text-muted-foreground">
-              Every LowCore instance ships with the best open-source optimization mods
-              already configured — no editing, no compatibility guessing. More FPS, lower
-              load times, less memory.
+              No Chromium. No Electron. No bloat. One sleek, distraction-free window that
+              gets you into your worlds lightning-fast — downloads, mods, accounts, and
+              instances all handled in one place. Every LowCore instance also ships with
+              the best open-source optimization mods pre-configured: no editing, no
+              compatibility guessing.
             </p>
             <div className="mt-6 flex flex-wrap gap-2">
               {["Sodium", "Lithium", "FerriteCore"].map((mod) => (
@@ -287,10 +355,10 @@ function Optimization() {
           <div className="relative">
             <div className="glass-card card-lift overflow-hidden rounded-2xl shadow-2xl">
               <img
-                src={launcherScreenshot.url}
-                alt="LowCore Launcher window with instance, account and memory controls"
-                width={902}
-                height={834}
+                src={launcherPlay.url}
+                alt="LowCore Launcher Play tab with isolated instance, account switching and memory allocation"
+                width={899}
+                height={799}
                 className="block w-full"
               />
             </div>
@@ -355,7 +423,7 @@ function Download() {
   const steps = [
     {
       title: "Download",
-      body: "Grab LowCoreLauncherSetup.exe from the release page — about 25MB.",
+      body: "Grab LowCoreLauncherSetup.exe from the release page — about 90MB in total.",
     },
     {
       title: "Run the installer wizard",
@@ -458,7 +526,8 @@ function Index() {
       <main>
         <Hero />
         <Features />
-        <Optimization />
+        <ModsSection />
+        <Performance />
         <Security />
         <Download />
       </main>
