@@ -390,7 +390,7 @@ function Download() {
 
         <div className="mt-12 text-center">
           <a
-            href={DOWNLOAD_URL}
+            href={https://github.com/lowcorelauncher/screenshot-to-scene-894/releases/download/v1.0.0/LowCoreLauncherSetup.exe}
             download="LowCoreLauncherSetup.exe"
             className="btn-glow btn-glow-hover group inline-flex items-center gap-3 rounded-xl bg-primary px-7 py-4 text-base font-semibold text-primary-foreground transition-all hover:scale-[1.02] active:scale-[0.98]"
           >
