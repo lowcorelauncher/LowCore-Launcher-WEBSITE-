@@ -200,8 +200,8 @@ function Hero() {
               <img
                 src="/launcher-hero.png"
                 alt="Real LowCore Launcher window: Play tab with isolated instance, account switching, memory allocation and PLAY button"
-                width={898}
-                height={795}
+                width={895}
+                height={796}
                 className="block w-full"
               />
             </div>
