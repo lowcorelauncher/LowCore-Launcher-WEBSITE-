@@ -19,10 +19,6 @@ import {
   Puzzle,
 } from "lucide-react";
 
-import launcherHero from "@/assets/launcher-hero.png.asset.json";
-import launcherPlay from "@/assets/launcher-play.png.asset.json";
-import launcherMods from "@/assets/launcher-mods.png.asset.json";
-import lowcoreLogo from "@/assets/lowcore-logo.png.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -47,7 +43,7 @@ export const Route = createFileRoute("/")({
 });
 
 const DOWNLOAD_URL =
-  "https://github.com/lowcorelauncher/screenshot-to-scene-894/releases/download/v1.0.0/LowCoreLauncherSetup.exe";
+  "https://github.com/lowcorelauncher/LowCore-Launcher-WEBSITE-/releases/download/v1.0.0/LowCoreLauncherSetup.exe";
 const DISCORD_URL = "https://discord.gg/PxF3vqqstC";
 const GITHUB_URL = "https://github.com/lowcore/launcher";
 
