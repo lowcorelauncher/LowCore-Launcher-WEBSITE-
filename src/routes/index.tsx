@@ -98,7 +98,7 @@ const STATS = [
 function Logo() {
   return (
     <a href="#top" className="flex items-center gap-2.5">
-      <img src={lowcoreLogo.url} alt="LowCore logo" className="h-8 w-8" />
+      <img src="/lowcore-logo.png" alt="LowCore logo" className="h-8 w-8" />
       <span className="font-display text-lg font-bold tracking-tight text-foreground">
         LowCore
       </span>
@@ -198,7 +198,7 @@ function Hero() {
           <div className="animate-float-soft flex flex-col items-center">
             <div className="glass-card overflow-hidden rounded-t-2xl rounded-b-md shadow-2xl ring-1 ring-border">
               <img
-                src={launcherHero.url}
+                src="/launcher-hero.png"
                 alt="Real LowCore Launcher window: Play tab with isolated instance, account switching, memory allocation and PLAY button"
                 width={898}
                 height={795}
@@ -276,7 +276,7 @@ function ModsSection() {
         <div className="relative order-2 lg:order-1">
           <div className="glass-card card-lift overflow-hidden rounded-2xl shadow-2xl">
             <img
-              src={launcherMods.url}
+              src="/launcher-mods.png"
               alt="LowCore Content Browser searching mods with one-click download to a selected instance"
               width={896}
               height={797}
@@ -351,7 +351,7 @@ function Performance() {
           <div className="relative">
             <div className="glass-card card-lift overflow-hidden rounded-2xl shadow-2xl">
               <img
-                src={launcherPlay.url}
+                src="/launcher-play.png"
                 alt="LowCore Launcher Play tab with isolated instance, account switching and memory allocation"
                 width={899}
                 height={799}
