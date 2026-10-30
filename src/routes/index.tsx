@@ -321,6 +321,73 @@ function ModsSection() {
   );
 }
 
+function Customization() {
+  const points = [
+    {
+      icon: Palette,
+      title: "Make it yours",
+      body: "Client themes built right in — switch the whole launcher look, like OLED Black, from a single dropdown.",
+    },
+    {
+      icon: AppWindow,
+      title: "Tune your game window",
+      body: "Set your own width and height, or start straight into fullscreen. It remembers it for next time.",
+    },
+    {
+      icon: FolderOpen,
+      title: "Your folders, your rules",
+      body: "Choose exactly where your instances, libraries, auto Java, and downloads live — everything stays where you put it.",
+    },
+  ];
+
+  return (
+    <section id="customize" className="mx-auto max-w-6xl scroll-mt-20 px-4 py-20 sm:px-6 sm:py-28">
+      <div className="grid items-center gap-12 lg:grid-cols-2">
+        <div>
+          <p className="font-display text-sm font-semibold uppercase tracking-widest text-coral">
+            Easy to Use &amp; Customizable
+          </p>
+          <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            Simple on the surface. Deep where it counts.
+          </h2>
+          <p className="mt-4 leading-relaxed text-muted-foreground">
+            LowCore is easy to use out of the box and customizable where it matters: themes,
+            resolutions, folders, accounts and instances — all handled in one clean place,
+            with no config files or tech skills required.
+          </p>
+          <div className="mt-8 space-y-5">
+            {points.map((point) => (
+              <div key={point.title} className="flex items-start gap-4">
+                <div className="inline-flex shrink-0 rounded-xl bg-coral/10 p-2.5 text-coral ring-1 ring-coral/20">
+                  <point.icon className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="font-display font-semibold text-foreground">{point.title}</h3>
+                  <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                    {point.body}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="relative">
+          <div className="glass-card card-lift overflow-hidden rounded-2xl shadow-2xl">
+            <img
+              src="/launcher-settings.png"
+              alt="LowCore Launcher Settings tab with client theme, window resolution, logging and custom folder options"
+              width={893}
+              height={796}
+              className="block w-full"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Performance() {
   return (
     <section
@@ -328,40 +395,26 @@ function Performance() {
       className="relative scroll-mt-20 border-y border-border bg-card/40 py-20 sm:py-28"
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <div className="grid items-center gap-12 lg:grid-cols-2">
-          <div>
-            <p className="font-display text-sm font-semibold uppercase tracking-widest text-mint">
-              Lightweight &amp; Fast
-            </p>
-            <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-              The entire launcher is just 90MB.
-            </h2>
-            <p className="mt-4 leading-relaxed text-muted-foreground">
-              No Chromium. No Electron. No bloat. One sleek, distraction-free window that
-              gets you into your worlds lightning-fast — downloads, mods, accounts, and
-              instances all handled in one place. Every LowCore instance also ships with
-              the best open-source optimization mods pre-configured: no editing, no
-              compatibility guessing.
-            </p>
-            <div className="mt-6 flex flex-wrap gap-2">
-              {["Sodium", "Lithium", "FerriteCore"].map((mod) => (
-                <span key={mod} className="chip chip-mint font-mono">
-                  {mod}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          <div className="relative">
-            <div className="glass-card card-lift overflow-hidden rounded-2xl shadow-2xl">
-              <img
-                src="/launcher-play.png"
-                alt="LowCore Launcher Play tab with isolated instance, account switching and memory allocation"
-                width={899}
-                height={799}
-                className="block w-full"
-              />
-            </div>
+        <div className="mx-auto max-w-2xl text-center">
+          <p className="font-display text-sm font-semibold uppercase tracking-widest text-mint">
+            Lightweight &amp; Fast
+          </p>
+          <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            The entire launcher is just 90MB.
+          </h2>
+          <p className="mt-4 leading-relaxed text-muted-foreground">
+            No Chromium. No Electron. No bloat. One sleek, distraction-free window that
+            gets you into your worlds lightning-fast — downloads, mods, accounts, and
+            instances all handled in one place. Every LowCore instance also ships with
+            the best open-source optimization mods pre-configured: no editing, no
+            compatibility guessing.
+          </p>
+          <div className="mt-6 flex flex-wrap justify-center gap-2">
+            {["Sodium", "Lithium", "FerriteCore"].map((mod) => (
+              <span key={mod} className="chip chip-mint font-mono">
+                {mod}
+              </span>
+            ))}
           </div>
         </div>
 
@@ -527,6 +580,7 @@ function Index() {
         <Hero />
         <Features />
         <ModsSection />
+        <Customization />
         <Performance />
         <Security />
         <Download />
