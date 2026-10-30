@@ -17,6 +17,9 @@ import {
   Search,
   CloudDownload,
   Puzzle,
+  Palette,
+  AppWindow,
+  FolderOpen,
 } from "lucide-react";
 
 
@@ -50,6 +53,7 @@ const GITHUB_URL = "https://github.com/lowcore/launcher";
 const NAV_LINKS = [
   { label: "Features", href: "#features" },
   { label: "Mods", href: "#mods" },
+  { label: "Customize", href: "#customize" },
   { label: "Performance", href: "#performance" },
   { label: "Security", href: "#security" },
   { label: "Discord", href: DISCORD_URL, external: true },
