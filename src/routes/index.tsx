@@ -10,16 +10,16 @@ import {
   ArrowRight,
   MessageSquare,
   Github,
-  Cpu,
-  MonitorDown,
-  FileCheck2,
-  Rocket,
   Search,
   CloudDownload,
   Puzzle,
   Palette,
   AppWindow,
   FolderOpen,
+  BadgeDollarSign,
+  Sparkles,
+  EyeOff,
+  Infinity as InfinityIcon,
 } from "lucide-react";
 
 
@@ -92,12 +92,6 @@ const FEATURES = [
   },
 ];
 
-const STATS = [
-  { icon: MonitorDown, value: "90MB", label: "Entire launcher footprint" },
-  { icon: Cpu, value: "Native", label: "64-bit Windows toolchain" },
-  { icon: DownloadIcon, value: "0", label: "Chromium or Electron deps" },
-  { icon: FileCheck2, value: "0/62", label: "VirusTotal, fully clean" },
-];
 
 function Logo() {
   return (
