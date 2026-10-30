@@ -203,10 +203,6 @@ function Hero() {
                 className="block w-full"
               />
             </div>
-            <div
-              className="h-4 w-[106%] rounded-b-2xl bg-gradient-to-b from-secondary to-muted shadow-xl ring-1 ring-border"
-              aria-hidden="true"
-            />
           </div>
         </div>
       </div>
