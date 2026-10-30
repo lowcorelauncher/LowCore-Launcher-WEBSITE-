@@ -10,16 +10,16 @@ import {
   ArrowRight,
   MessageSquare,
   Github,
-  Cpu,
-  MonitorDown,
-  FileCheck2,
-  Rocket,
   Search,
   CloudDownload,
   Puzzle,
   Palette,
   AppWindow,
   FolderOpen,
+  BadgeDollarSign,
+  Sparkles,
+  EyeOff,
+  Infinity as InfinityIcon,
 } from "lucide-react";
 
 
@@ -54,7 +54,7 @@ const NAV_LINKS = [
   { label: "Features", href: "#features" },
   { label: "Mods", href: "#mods" },
   { label: "Customize", href: "#customize" },
-  { label: "Performance", href: "#performance" },
+  { label: "Free", href: "#free" },
   { label: "Security", href: "#security" },
   { label: "Discord", href: DISCORD_URL, external: true },
 ];
@@ -92,12 +92,6 @@ const FEATURES = [
   },
 ];
 
-const STATS = [
-  { icon: MonitorDown, value: "90MB", label: "Entire launcher footprint" },
-  { icon: Cpu, value: "Native", label: "64-bit Windows toolchain" },
-  { icon: DownloadIcon, value: "0", label: "Chromium or Electron deps" },
-  { icon: FileCheck2, value: "0/62", label: "VirusTotal, fully clean" },
-];
 
 function Logo() {
   return (
@@ -391,37 +385,33 @@ function Customization() {
 function Performance() {
   return (
     <section
-      id="performance"
+      id="free"
       className="relative scroll-mt-20 border-y border-border bg-card/40 py-20 sm:py-28"
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="mx-auto max-w-2xl text-center">
           <p className="font-display text-sm font-semibold uppercase tracking-widest text-mint">
-            Lightweight &amp; Fast
+            100% Free
           </p>
           <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            The entire launcher is just 90MB.
+            The entire client is fully free.
           </h2>
           <p className="mt-4 leading-relaxed text-muted-foreground">
-            No Chromium. No Electron. No bloat. One sleek, distraction-free window that
-            gets you into your worlds lightning-fast — downloads, mods, accounts, and
-            instances all handled in one place. Every LowCore instance also ships with
-            the best open-source optimization mods pre-configured: no editing, no
-            compatibility guessing.
+            No price tag. No premium tiers. No ads, no locked features, no catch. Every
+            instance, every mod, every setting — everything in LowCore is completely free,
+            and it always will be. Just download it and play.
           </p>
-          <div className="mt-6 flex flex-wrap justify-center gap-2">
-            {["Sodium", "Lithium", "FerriteCore"].map((mod) => (
-              <span key={mod} className="chip chip-mint font-mono">
-                {mod}
-              </span>
-            ))}
-          </div>
         </div>
 
         <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-4">
-          {STATS.map((stat) => (
+          {[
+            { icon: BadgeDollarSign, value: "$0", label: "Cost, forever" },
+            { icon: Sparkles, value: "All", label: "Features unlocked" },
+            { icon: EyeOff, value: "0", label: "Ads or trackers" },
+            { icon: InfinityIcon, value: "Forever", label: "Free updates" },
+          ].map((stat) => (
             <div key={stat.label} className="glass-card card-lift rounded-2xl p-5">
-              <stat.icon className="h-5 w-5 text-coral" />
+              <stat.icon className="h-5 w-5 text-mint" />
               <div className="mt-4 font-display text-2xl font-bold text-foreground sm:text-3xl">
                 {stat.value}
               </div>
