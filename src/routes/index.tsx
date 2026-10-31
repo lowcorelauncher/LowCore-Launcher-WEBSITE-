@@ -106,20 +106,12 @@ function PlatformDownloadButtons() {
   );
 
   const linuxButton = (
-    <a
-      href={LINUX_URL}
-      download="LowCoreLauncher-Linux.zip"
+    <LinuxDownloadButton
       className={cn(
         "order-1 sm:order-none",
         linuxPrimary ? primaryButtonClass : secondaryButtonClass,
       )}
-    >
-      <LinuxIcon className="h-5 w-5" />
-      <span className="flex flex-col items-start leading-tight">
-        <span>Download for Linux</span>
-        <span className="text-xs font-normal opacity-80">v1.0.0 (x64 .zip)</span>
-      </span>
-    </a>
+    />
   );
 
   return (
