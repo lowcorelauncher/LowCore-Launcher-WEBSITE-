@@ -263,24 +263,16 @@ function Hero() {
           </p>
 
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <a
-              href={DOWNLOAD_URL}
-              download="LowCoreLauncherSetup.exe"
-              className="btn-glow btn-glow-hover group inline-flex items-center gap-3 rounded-xl bg-primary px-7 py-4 text-base font-semibold text-primary-foreground transition-all hover:scale-[1.02] active:scale-[0.98]"
-            >
-              <DownloadIcon className="h-5 w-5 transition-transform group-hover:translate-y-0.5" />
-              <span className="flex flex-col items-start leading-tight">
-                <span>Download for Windows (.exe)</span>
-                <span className="text-xs font-normal opacity-80">v1.0.0-Beta • Instant Setup</span>
-              </span>
-            </a>
+            <PlatformDownloadButtons />
+          </div>
+          <div className="mt-4 flex justify-center">
             <a
               href={DISCORD_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="glass-card card-lift inline-flex items-center gap-2.5 rounded-xl px-6 py-4 text-base font-semibold text-foreground"
+              className="glass-card card-lift inline-flex items-center gap-2.5 rounded-xl px-5 py-2.5 text-sm font-semibold text-foreground"
             >
-              <MessageSquare className="h-5 w-5 text-mint" />
+              <MessageSquare className="h-4 w-4 text-mint" />
               Join Discord Community
             </a>
           </div>
