@@ -120,7 +120,17 @@ function PlatformDownloadButtons() {
 
   return (
     <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-      {linuxPrimary ? [linuxButton, windowsButton] : [windowsButton, linuxButton]}
+      {linuxPrimary ? (
+        <React.Fragment key="linux-first">
+          {linuxButton}
+          {windowsButton}
+        </React.Fragment>
+      ) : (
+        <React.Fragment key="windows-first">
+          {windowsButton}
+          {linuxButton}
+        </React.Fragment>
+      )}
     </div>
   );
 }
