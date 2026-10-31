@@ -131,26 +131,47 @@ function PlatformDownloadButtons() {
   );
 }
 
-function LinuxInstructions() {
+function LinuxDownloadButton({ className }: { className: string }) {
+  const [open, setOpen] = React.useState(false);
   return (
-    <Accordion type="single" collapsible className="mx-auto mt-6 max-w-xl">
-      <AccordionItem value="linux-instructions" className="border-border">
-        <AccordionTrigger className="px-4 text-sm font-medium text-muted-foreground hover:no-underline hover:text-foreground">
-          Linux installation instructions
-        </AccordionTrigger>
-        <AccordionContent className="px-4">
+    <>
+      <a
+        href={LINUX_URL}
+        download="LowCoreLauncher-Linux.zip"
+        className={className}
+        onClick={() => setOpen(true)}
+      >
+        <LinuxIcon className="h-5 w-5" />
+        <span className="flex flex-col items-start leading-tight">
+          <span>Download for Linux</span>
+          <span className="text-xs font-normal opacity-80">v1.0.0 (x64 .zip)</span>
+        </span>
+      </a>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="font-display">Linux installation instructions</DialogTitle>
+            <DialogDescription>
+              Your download has started. Here's how to run LowCore once it finishes:
+            </DialogDescription>
+          </DialogHeader>
           <ol className="list-decimal space-y-2 pl-4 text-sm text-muted-foreground">
             <li>Extract the downloaded zip archive.</li>
-            <li>
-              Open a terminal in the folder and run:
-              <pre className="mt-2 overflow-x-auto rounded-lg bg-card px-4 py-3 font-mono text-xs leading-relaxed text-foreground ring-1 ring-border">
-                chmod +x LowCoreLauncher{"\n"}./LowCoreLauncher
-              </pre>
-            </li>
+            <li>Open a terminal in the extracted folder and run:</li>
           </ol>
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
+          <pre className="overflow-x-auto rounded-lg bg-card px-4 py-3 font-mono text-xs leading-relaxed text-foreground ring-1 ring-border">
+            chmod +x LowCoreLauncher{"\n"}./LowCoreLauncher
+          </pre>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
+                Got it
+              </Button>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
 
