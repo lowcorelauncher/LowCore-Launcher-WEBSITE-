@@ -552,7 +552,7 @@ function Download() {
   const steps = [
     {
       title: "Download",
-      body: "Grab LowCoreLauncherSetup.exe from the release page — about 90MB in total.",
+      body: "Grab the installer for your platform — LowCoreLauncherSetup.exe on Windows or the Linux .zip.",
     },
     {
       title: "Run the installer wizard",
