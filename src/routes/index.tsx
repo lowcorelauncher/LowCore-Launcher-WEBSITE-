@@ -623,7 +623,6 @@ function Download() {
 
         <div className="mt-12 flex flex-col items-center">
           <PlatformDownloadButtons />
-          <LinuxInstructions />
         </div>
       </div>
     </section>
