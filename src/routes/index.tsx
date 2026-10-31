@@ -1,4 +1,13 @@
+import * as React from "react";
 import { createFileRoute } from "@tanstack/react-router";
+import { cn } from "@/lib/utils";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { LinuxIcon } from "@/components/linux-icon";
 import {
   Zap,
   Gauge,
@@ -47,8 +56,107 @@ export const Route = createFileRoute("/")({
 
 const DOWNLOAD_URL =
   "https://github.com/lowcorelauncher/LowCore-Launcher-WEBSITE-/releases/download/v1.0.0/LowCoreLauncherSetup.exe";
+const LINUX_URL =
+  "https://github.com/lowcorelauncher/LowCore-Launcher-Source/releases/download/lowcorelinuxV.1.0.0/LowCoreLauncher-Linux.zip";
 const DISCORD_URL = "https://discord.gg/PxF3vqqstC";
 const GITHUB_URL = "https://github.com/lowcore/launcher";
+
+type VisitorOs = "unknown" | "windows" | "linux" | "other";
+
+function useVisitorOs(): VisitorOs {
+  const [os, setOs] = React.useState<VisitorOs>("unknown");
+  React.useEffect(() => {
+    const ua = window.navigator.userAgent;
+    if (/Android|iPhone|iPad/i.test(ua)) setOs("other");
+    else if (/Linux|X11/i.test(ua)) setOs("linux");
+    else if (/Win/i.test(ua)) setOs("windows");
+    else setOs("other");
+  }, []);
+  return os;
+}
+
+const primaryButtonClass =
+  "btn-glow btn-glow-hover group inline-flex items-center gap-3 rounded-xl bg-primary px-7 py-4 text-base font-semibold text-primary-foreground transition-all hover:scale-[1.02] active:scale-[0.98]";
+const secondaryButtonClass =
+  "glass-card card-lift inline-flex items-center gap-3 rounded-xl px-6 py-4 text-base font-semibold text-foreground transition-all hover:scale-[1.02] active:scale-[0.98]";
+
+function PlatformDownloadButtons() {
+  const os = useVisitorOs();
+  const linuxPrimary = os === "linux";
+
+  const windowsButton = (
+    <a
+      href={DOWNLOAD_URL}
+      download="LowCoreLauncherSetup.exe"
+      className={cn(
+        "order-2 sm:order-none",
+        linuxPrimary ? secondaryButtonClass : primaryButtonClass,
+      )}
+    >
+      <DownloadIcon className="h-5 w-5 transition-transform group-hover:translate-y-0.5" />
+      <span className="flex flex-col items-start leading-tight">
+        <span>Download for Windows (.exe)</span>
+        <span className="text-xs font-normal opacity-80">v1.0.0-Beta • Windows 64-bit</span>
+      </span>
+    </a>
+  );
+
+  const linuxButton = (
+    <a
+      href={LINUX_URL}
+      download="LowCoreLauncher-Linux.zip"
+      className={cn(
+        "order-1 sm:order-none",
+        linuxPrimary ? primaryButtonClass : secondaryButtonClass,
+      )}
+    >
+      <LinuxIcon className="h-5 w-5" />
+      <span className="flex flex-col items-start leading-tight">
+        <span>Download for Linux</span>
+        <span className="text-xs font-normal opacity-80">v1.0.0 (x64 .zip)</span>
+      </span>
+    </a>
+  );
+
+  return (
+    <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+      {linuxPrimary ? (
+        <React.Fragment key="linux-first">
+          {linuxButton}
+          {windowsButton}
+        </React.Fragment>
+      ) : (
+        <React.Fragment key="windows-first">
+          {windowsButton}
+          {linuxButton}
+        </React.Fragment>
+      )}
+    </div>
+  );
+}
+
+function LinuxInstructions() {
+  return (
+    <Accordion type="single" collapsible className="mx-auto mt-6 max-w-xl">
+      <AccordionItem value="linux-instructions" className="border-border">
+        <AccordionTrigger className="px-4 text-sm font-medium text-muted-foreground hover:no-underline hover:text-foreground">
+          Linux installation instructions
+        </AccordionTrigger>
+        <AccordionContent className="px-4">
+          <ol className="list-decimal space-y-2 pl-4 text-sm text-muted-foreground">
+            <li>Extract the downloaded zip archive.</li>
+            <li>
+              Open a terminal in the folder and run:
+              <pre className="mt-2 overflow-x-auto rounded-lg bg-card px-4 py-3 font-mono text-xs leading-relaxed text-foreground ring-1 ring-border">
+                chmod +x LowCoreLauncher{"\n"}./LowCoreLauncher
+              </pre>
+            </li>
+          </ol>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  );
+}
 
 const NAV_LINKS = [
   { label: "Features", href: "#features" },
@@ -165,24 +273,16 @@ function Hero() {
           </p>
 
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <a
-              href={DOWNLOAD_URL}
-              download="LowCoreLauncherSetup.exe"
-              className="btn-glow btn-glow-hover group inline-flex items-center gap-3 rounded-xl bg-primary px-7 py-4 text-base font-semibold text-primary-foreground transition-all hover:scale-[1.02] active:scale-[0.98]"
-            >
-              <DownloadIcon className="h-5 w-5 transition-transform group-hover:translate-y-0.5" />
-              <span className="flex flex-col items-start leading-tight">
-                <span>Download for Windows (.exe)</span>
-                <span className="text-xs font-normal opacity-80">v1.0.0-Beta • Instant Setup</span>
-              </span>
-            </a>
+            <PlatformDownloadButtons />
+          </div>
+          <div className="mt-4 flex justify-center">
             <a
               href={DISCORD_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="glass-card card-lift inline-flex items-center gap-2.5 rounded-xl px-6 py-4 text-base font-semibold text-foreground"
+              className="glass-card card-lift inline-flex items-center gap-2.5 rounded-xl px-5 py-2.5 text-sm font-semibold text-foreground"
             >
-              <MessageSquare className="h-5 w-5 text-mint" />
+              <MessageSquare className="h-4 w-4 text-mint" />
               Join Discord Community
             </a>
           </div>
@@ -462,7 +562,7 @@ function Download() {
   const steps = [
     {
       title: "Download",
-      body: "Grab LowCoreLauncherSetup.exe from the release page — about 90MB in total.",
+      body: "Grab the installer for your platform — LowCoreLauncherSetup.exe on Windows or the Linux .zip.",
     },
     {
       title: "Run the installer wizard",
@@ -504,18 +604,9 @@ function Download() {
           ))}
         </div>
 
-        <div className="mt-12 text-center">
-          <a
-            href={DOWNLOAD_URL}
-            download="LowCoreLauncherSetup.exe"
-            className="btn-glow btn-glow-hover group inline-flex items-center gap-3 rounded-xl bg-primary px-7 py-4 text-base font-semibold text-primary-foreground transition-all hover:scale-[1.02] active:scale-[0.98]"
-          >
-            <DownloadIcon className="h-5 w-5 transition-transform group-hover:translate-y-0.5" />
-            <span className="flex flex-col items-start leading-tight">
-              <span>Download LowCoreLauncherSetup.exe</span>
-              <span className="text-xs font-normal opacity-80">v1.0.0-Beta • Windows 64-bit</span>
-            </span>
-          </a>
+        <div className="mt-12 flex flex-col items-center">
+          <PlatformDownloadButtons />
+          <LinuxInstructions />
         </div>
       </div>
     </section>
