@@ -1,4 +1,13 @@
+import * as React from "react";
 import { createFileRoute } from "@tanstack/react-router";
+import { cn } from "@/lib/utils";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { LinuxIcon } from "@/components/linux-icon";
 import {
   Zap,
   Gauge,
