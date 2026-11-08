@@ -152,16 +152,24 @@ function LinuxDownloadButton({ className }: { className: string }) {
           <DialogHeader>
             <DialogTitle className="font-display">Linux installation instructions</DialogTitle>
             <DialogDescription>
-              Your download has started. Here's how to run LowCore once it finishes:
+              Your download has started. After it finishes, open a terminal in the extracted folder and run:
             </DialogDescription>
           </DialogHeader>
-          <ol className="list-decimal space-y-2 pl-4 text-sm text-muted-foreground">
-            <li>Extract the downloaded zip archive.</li>
-            <li>Open a terminal in the extracted folder and run:</li>
-          </ol>
           <pre className="overflow-x-auto rounded-lg bg-card px-4 py-3 font-mono text-xs leading-relaxed text-foreground ring-1 ring-border">
-            chmod +x LowCoreLauncher{"\n"}./LowCoreLauncher
+            bash install.sh
           </pre>
+          <div className="space-y-3 text-sm text-muted-foreground">
+            <h3 className="font-semibold text-foreground">Troubleshooting</h3>
+            <p>
+              If it asks for <code className="rounded bg-card px-1.5 py-0.5 font-mono text-xs text-foreground">libxcb-cursor0</code> or fails with an xcb error, run:
+            </p>
+            <pre className="overflow-x-auto rounded-lg bg-card px-4 py-3 font-mono text-xs leading-relaxed text-foreground ring-1 ring-border">
+              sudo apt update &amp;&amp; sudo apt install -y libxcb-cursor0
+            </pre>
+            <p>
+              On Ubuntu/GNOME, if the desktop shortcut does not open, right-click the desktop icon and choose <strong className="text-foreground">Allow Launching</strong>.
+            </p>
+          </div>
           <DialogFooter>
             <DialogClose asChild>
               <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
