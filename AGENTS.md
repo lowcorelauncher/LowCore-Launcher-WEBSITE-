@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- The Linux download link should trigger the browser download and open a controlled instructions dialog on the same click, so setup guidance is visible without navigating away.

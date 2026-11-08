@@ -1,0 +1,1 @@
+- [x] Add Linux install.sh and Ubuntu troubleshooting guidance to the download popup; verify the download and popup flow.
