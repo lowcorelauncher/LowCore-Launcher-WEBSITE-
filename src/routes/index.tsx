@@ -34,6 +34,7 @@ import {
   EyeOff,
   Infinity as InfinityIcon,
 } from "lucide-react";
+import { DEFAULT_LAUNCHER_THEME, LAUNCHER_THEMES } from "@/lib/launcher-themes";
 
 
 export const Route = createFileRoute("/")({
@@ -87,13 +88,11 @@ const secondaryButtonClass =
 function PlatformDownloadButtons() {
   const os = useVisitorOs();
   const linuxPrimary = os === "linux";
-  const [discordOpen, setDiscordOpen] = React.useState(false);
 
   const windowsButton = (
     <a
       href={DOWNLOAD_URL}
       download="LowCoreLauncherSetup.exe"
-      onClick={() => setDiscordOpen(true)}
       className={cn(
         "order-2 sm:order-none",
         linuxPrimary ? secondaryButtonClass : primaryButtonClass,
@@ -109,7 +108,6 @@ function PlatformDownloadButtons() {
 
   const linuxButton = (
     <LinuxDownloadButton
-      onInstructionsClosed={() => setDiscordOpen(true)}
       className={cn(
         "order-1 sm:order-none",
         linuxPrimary ? primaryButtonClass : secondaryButtonClass,
@@ -118,52 +116,23 @@ function PlatformDownloadButtons() {
   );
 
   return (
-    <>
-      <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-        {linuxPrimary ? (
-          <React.Fragment key="linux-first">
-            {linuxButton}
-            {windowsButton}
-          </React.Fragment>
-        ) : (
-          <React.Fragment key="windows-first">
-            {windowsButton}
-            {linuxButton}
-          </React.Fragment>
-        )}
-      </div>
-      <Dialog open={discordOpen} onOpenChange={setDiscordOpen}>
-        <DialogContent className="sm:max-w-sm">
-          <DialogHeader>
-            <DialogTitle className="font-display">Join the Discord?</DialogTitle>
-            <DialogDescription>
-              Meet the LowCore community and stay up to date.
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <DialogClose asChild>
-              <Button variant="outline">Maybe later</Button>
-            </DialogClose>
-            <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
-              <a href={DISCORD_URL} target="_blank" rel="noopener noreferrer">
-                <MessageSquare className="h-4 w-4" />
-                Join Discord
-              </a>
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    </>
+    <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+      {linuxPrimary ? (
+        <React.Fragment key="linux-first">
+          {linuxButton}
+          {windowsButton}
+        </React.Fragment>
+      ) : (
+        <React.Fragment key="windows-first">
+          {windowsButton}
+          {linuxButton}
+        </React.Fragment>
+      )}
+    </div>
   );
 }
 
-function LinuxDownloadButton({
-  className,
-  onInstructionsClosed,
-}: {
-  className: string;
-  onInstructionsClosed: () => void;
-}) {
+function LinuxDownloadButton({ className }: { className: string }) {
   const [open, setOpen] = React.useState(false);
   return (
     <>
@@ -179,13 +148,7 @@ function LinuxDownloadButton({
           <span className="text-xs font-normal opacity-80">v1.0.0 (x64 .zip)</span>
         </span>
       </a>
-      <Dialog
-        open={open}
-        onOpenChange={(nextOpen) => {
-          setOpen(nextOpen);
-          if (!nextOpen) onInstructionsClosed();
-        }}
-      >
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="font-display">Linux installation instructions</DialogTitle>
@@ -368,6 +331,165 @@ function Hero() {
             </div>
           </div>
         </div>
+      </div>
+    </section>
+  );
+}
+
+function LauncherThemePreview() {
+  const [activeThemeName, setActiveThemeName] = React.useState(DEFAULT_LAUNCHER_THEME.name);
+  const [activeTab, setActiveTab] = React.useState("Play");
+  const activeTheme = LAUNCHER_THEMES.find((theme) => theme.name === activeThemeName) ?? DEFAULT_LAUNCHER_THEME;
+  const themeStyle = {
+    "--launcher-bg": activeTheme.background,
+    "--launcher-surface": activeTheme.surface,
+    "--launcher-panel": activeTheme.panel,
+    "--launcher-border": activeTheme.border,
+    "--launcher-text": activeTheme.text,
+    "--launcher-muted": activeTheme.muted,
+    "--launcher-accent": activeTheme.accent,
+    "--launcher-accent-text": activeTheme.accentText,
+    "--launcher-success": activeTheme.success,
+  } as React.CSSProperties;
+  const launcherButtonStyle = {
+    backgroundColor: "var(--launcher-surface)",
+    borderColor: "var(--launcher-border)",
+    color: "var(--launcher-text)",
+  };
+
+  return (
+    <section className="border-y border-border bg-card/30 py-16 sm:py-20" aria-labelledby="theme-preview-title">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <div className="mx-auto max-w-3xl text-center">
+          <p className="font-display text-sm font-semibold uppercase tracking-widest text-coral">
+            Make LowCore yours
+          </p>
+          <h2 id="theme-preview-title" className="mt-3 font-display text-3xl font-bold text-foreground sm:text-4xl">
+            Launcher UI &amp; Theme Previewer
+          </h2>
+          <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">
+            Pick a built-in theme to preview the launcher instantly.
+          </p>
+        </div>
+
+        <div className="mt-8 flex flex-wrap justify-center gap-2" aria-label="Launcher themes">
+          {LAUNCHER_THEMES.map((theme) => {
+            const selected = activeThemeName === theme.name;
+            return (
+              <Button
+                key={theme.name}
+                type="button"
+                variant="outline"
+                aria-pressed={selected}
+                onClick={() => setActiveThemeName(theme.name)}
+                className="h-9 rounded-full px-3 text-xs transition-colors duration-300"
+                style={{
+                  backgroundColor: selected ? theme.surface : "transparent",
+                  borderColor: selected ? theme.accent : "var(--color-border)",
+                  color: selected ? theme.accent : "var(--color-muted-foreground)",
+                }}
+              >
+                {theme.name}
+              </Button>
+            );
+          })}
+        </div>
+
+        <div
+          className="mt-8 overflow-hidden rounded-xl border shadow-2xl transition-colors duration-300"
+          style={{ ...themeStyle, backgroundColor: "var(--launcher-bg)", borderColor: "var(--launcher-border)" }}
+          aria-label={`${activeTheme.name} launcher preview`}
+        >
+          <header className="flex min-w-0 items-center justify-between gap-3 border-b px-4 py-3 sm:px-6" style={{ borderColor: "var(--launcher-border)" }}>
+            <div className="flex min-w-0 items-center gap-3">
+              <img src="/lowcore-logo.png" alt="" className="h-9 w-9 shrink-0 object-contain" />
+              <div className="min-w-0">
+                <div className="flex flex-wrap items-center gap-2">
+                  <h3 className="truncate font-display text-sm font-bold sm:text-base" style={{ color: "var(--launcher-text)" }}>
+                    LOWCORE LAUNCHER
+                  </h3>
+                  <span className="rounded px-1.5 py-0.5 text-[9px] font-bold tracking-widest" style={{ backgroundColor: "var(--launcher-accent)", color: "var(--launcher-accent-text)" }}>
+                    BETA
+                  </span>
+                </div>
+                <p className="text-[10px] font-semibold tracking-wide sm:text-xs" style={{ color: "var(--launcher-accent)" }}>
+                  EVERYTHING IN ONE
+                </p>
+              </div>
+            </div>
+            <div className="flex shrink-0 items-center gap-2">
+              <span className="hidden text-xs" style={{ color: "var(--launcher-muted)" }}>—</span>
+              <span className="hidden text-sm" style={{ color: "var(--launcher-muted)" }}>×</span>
+              <Button type="button" variant="outline" className="h-8 rounded-md px-2.5 text-[10px] font-semibold sm:h-9 sm:px-3 sm:text-xs" style={{ backgroundColor: "var(--launcher-surface)", borderColor: "var(--launcher-accent)", color: "var(--launcher-accent)" }}>
+                Kill Minecraft
+              </Button>
+            </div>
+          </header>
+
+          <nav className="flex gap-5 overflow-x-auto border-b px-4 sm:gap-8 sm:px-6" style={{ borderColor: "var(--launcher-border)" }} aria-label="Launcher preview tabs">
+            {["Play", "Content Browser", "Settings", "Console Log"].map((tab) => (
+              <button
+                key={tab}
+                type="button"
+                aria-pressed={activeTab === tab}
+                onClick={() => setActiveTab(tab)}
+                className="shrink-0 border-b-2 px-1 py-3 text-xs font-semibold transition-colors duration-300 sm:text-sm"
+                style={{ color: activeTab === tab ? "var(--launcher-text)" : "var(--launcher-muted)", borderColor: activeTab === tab ? "var(--launcher-accent)" : "transparent" }}
+              >
+                {tab}
+              </button>
+            ))}
+          </nav>
+
+          <div className="p-4 sm:p-6">
+            <div className="rounded-xl border p-4 sm:p-6" style={{ backgroundColor: "var(--launcher-surface)", borderColor: "var(--launcher-border)" }}>
+              <label className="text-xs font-semibold" style={{ color: "var(--launcher-muted)" }}>Active Isolated Instance</label>
+              <div className="mt-3 grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto_auto_auto]">
+                <Button type="button" variant="outline" className="h-11 min-w-0 justify-between rounded-lg px-3 text-left text-xs sm:px-4 sm:text-sm" style={launcherButtonStyle}>
+                  <span className="truncate">Main Shi&nbsp; · &nbsp;Fabric 1.21.11&nbsp; (47h 11m)</span><span className="ml-2 shrink-0">⌄</span>
+                </Button>
+                <Button type="button" variant="outline" aria-label="More instance options" className="hidden h-11 w-11 rounded-lg sm:inline-flex" style={launcherButtonStyle}>⋮</Button>
+                <Button type="button" variant="outline" className="h-11 rounded-lg px-3 text-xs sm:px-4 sm:text-sm" style={launcherButtonStyle}>+ New Instance</Button>
+                <Button type="button" variant="outline" className="h-11 rounded-lg px-3 text-xs sm:px-4 sm:text-sm" style={launcherButtonStyle}>⇧ Import</Button>
+              </div>
+
+              <div className="mt-5">
+                <label className="text-xs font-semibold" style={{ color: "var(--launcher-muted)" }}>Account</label>
+                <div className="mt-3 grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto_auto]">
+                  <Button type="button" variant="outline" className="h-11 min-w-0 justify-between rounded-lg px-3 text-left text-xs sm:px-4 sm:text-sm" style={launcherButtonStyle}>
+                    <span className="truncate">🟦&nbsp; Javero&nbsp; · &nbsp;Microsoft</span><span className="ml-2 shrink-0">⌄</span>
+                  </Button>
+                  <Button type="button" variant="outline" className="h-11 rounded-lg px-3 text-xs sm:px-5 sm:text-sm" style={launcherButtonStyle}>+ Offline</Button>
+                  <Button type="button" variant="outline" className="h-11 rounded-lg px-3 text-xs sm:px-5 sm:text-sm" style={launcherButtonStyle}>+ Microsoft</Button>
+                </div>
+              </div>
+
+              <div className="mt-5">
+                <label className="text-xs font-semibold" style={{ color: "var(--launcher-muted)" }}>Global High-Performance Memory Allocation</label>
+                <Button type="button" variant="outline" className="mt-3 h-11 w-full justify-between rounded-lg px-3 text-left text-xs sm:px-4 sm:text-sm" style={launcherButtonStyle}>
+                  <span>4096 MB (4 GB - Recommended)</span><span>⌄</span>
+                </Button>
+              </div>
+            </div>
+
+            <p className="mt-6 text-center text-sm font-semibold tracking-wide" style={{ color: "var(--launcher-success)" }}>Ready to launch</p>
+            <Button type="button" className="mt-3 h-14 w-full rounded-lg text-base font-extrabold tracking-wide transition-colors duration-300 sm:h-16" style={{ backgroundColor: "var(--launcher-accent)", color: "var(--launcher-accent-text)" }}>PLAY</Button>
+
+            <div className="mt-3 grid grid-cols-3 gap-2 sm:gap-3">
+              {[
+                { label: "PLAYTIME", value: "47h 11m" },
+                { label: "MODS", value: "41" },
+                { label: "LAST PLAYED", value: "20h ago" },
+              ].map((stat) => (
+                <div key={stat.label} className="min-w-0 rounded-lg border px-2.5 py-3 sm:px-4" style={{ backgroundColor: "var(--launcher-surface)", borderColor: "var(--launcher-border)" }}>
+                  <p className="truncate text-[9px] font-semibold sm:text-xs" style={{ color: "var(--launcher-muted)" }}>{stat.label}</p>
+                  <p className="mt-1 truncate text-xs font-bold sm:text-base" style={{ color: "var(--launcher-text)" }}>{stat.value}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        <p className="mt-3 text-center text-xs text-muted-foreground" aria-live="polite">Previewing {activeTheme.name}</p>
       </div>
     </section>
   );
@@ -717,6 +839,7 @@ function Index() {
       <Navbar />
       <main>
         <Hero />
+        <LauncherThemePreview />
         <Features />
         <ModsSection />
         <Customization />

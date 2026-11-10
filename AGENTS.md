@@ -10,3 +10,4 @@
 <!-- LOVABLE:END -->
 
 - The Linux download link should trigger the browser download and open a controlled instructions dialog on the same click, so setup guidance is visible without navigating away.
+- Keep the launcher preview's typed theme presets together in a browser-safe module so the 14 selectable palettes remain reusable and testable.
