@@ -87,11 +87,13 @@ const secondaryButtonClass =
 function PlatformDownloadButtons() {
   const os = useVisitorOs();
   const linuxPrimary = os === "linux";
+  const [discordOpen, setDiscordOpen] = React.useState(false);
 
   const windowsButton = (
     <a
       href={DOWNLOAD_URL}
       download="LowCoreLauncherSetup.exe"
+      onClick={() => setDiscordOpen(true)}
       className={cn(
         "order-2 sm:order-none",
         linuxPrimary ? secondaryButtonClass : primaryButtonClass,
@@ -107,6 +109,7 @@ function PlatformDownloadButtons() {
 
   const linuxButton = (
     <LinuxDownloadButton
+      onInstructionsClosed={() => setDiscordOpen(true)}
       className={cn(
         "order-1 sm:order-none",
         linuxPrimary ? primaryButtonClass : secondaryButtonClass,
@@ -115,23 +118,52 @@ function PlatformDownloadButtons() {
   );
 
   return (
-    <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-      {linuxPrimary ? (
-        <React.Fragment key="linux-first">
-          {linuxButton}
-          {windowsButton}
-        </React.Fragment>
-      ) : (
-        <React.Fragment key="windows-first">
-          {windowsButton}
-          {linuxButton}
-        </React.Fragment>
-      )}
-    </div>
+    <>
+      <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+        {linuxPrimary ? (
+          <React.Fragment key="linux-first">
+            {linuxButton}
+            {windowsButton}
+          </React.Fragment>
+        ) : (
+          <React.Fragment key="windows-first">
+            {windowsButton}
+            {linuxButton}
+          </React.Fragment>
+        )}
+      </div>
+      <Dialog open={discordOpen} onOpenChange={setDiscordOpen}>
+        <DialogContent className="sm:max-w-sm">
+          <DialogHeader>
+            <DialogTitle className="font-display">Join the Discord?</DialogTitle>
+            <DialogDescription>
+              Meet the LowCore community and stay up to date.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button variant="outline">Maybe later</Button>
+            </DialogClose>
+            <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
+              <a href={DISCORD_URL} target="_blank" rel="noopener noreferrer">
+                <MessageSquare className="h-4 w-4" />
+                Join Discord
+              </a>
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
 
-function LinuxDownloadButton({ className }: { className: string }) {
+function LinuxDownloadButton({
+  className,
+  onInstructionsClosed,
+}: {
+  className: string;
+  onInstructionsClosed: () => void;
+}) {
   const [open, setOpen] = React.useState(false);
   return (
     <>
@@ -147,7 +179,13 @@ function LinuxDownloadButton({ className }: { className: string }) {
           <span className="text-xs font-normal opacity-80">v1.0.0 (x64 .zip)</span>
         </span>
       </a>
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog
+        open={open}
+        onOpenChange={(nextOpen) => {
+          setOpen(nextOpen);
+          if (!nextOpen) onInstructionsClosed();
+        }}
+      >
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="font-display">Linux installation instructions</DialogTitle>
