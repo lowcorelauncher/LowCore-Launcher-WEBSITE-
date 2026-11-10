@@ -1,1 +1,2 @@
 - [x] Add Linux install.sh and Ubuntu troubleshooting guidance to the download popup; verify the download and popup flow.
+- [x] Add an interactive 14-theme launcher preview directly below the homepage hero.
