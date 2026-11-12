@@ -9,5 +9,5 @@
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
 
-- The Linux download link should trigger the browser download and open a controlled instructions dialog on the same click, so setup guidance is visible without navigating away.
+- Windows downloads open a controlled Discord invitation dialog after the download click; Linux downloads first show setup instructions, then show that invitation when instructions close.
 - Keep the launcher preview's typed theme presets together in a browser-safe module so the 14 selectable palettes remain reusable and testable.
