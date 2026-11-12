@@ -94,7 +94,11 @@ function PlatformDownloadButtons() {
     <a
       href={DOWNLOAD_URL}
       download="LowCoreLauncherSetup.exe"
-      onClick={() => setDiscordInvitationOpen(true)}
+      onClick={(event) => {
+        event.preventDefault();
+        window.open(DOWNLOAD_URL, "_blank", "noopener,noreferrer");
+        setDiscordInvitationOpen(true);
+      }}
       className={cn(
         "order-2 sm:order-none",
         linuxPrimary ? secondaryButtonClass : primaryButtonClass,
@@ -176,7 +180,11 @@ function LinuxDownloadButton({
         href={LINUX_URL}
         download="LowCoreLauncher-Linux.zip"
         className={className}
-        onClick={() => setOpen(true)}
+        onClick={(event) => {
+          event.preventDefault();
+          window.open(LINUX_URL, "_blank", "noopener,noreferrer");
+          setOpen(true);
+        }}
       >
         <LinuxIcon className="h-5 w-5" />
         <span className="flex flex-col items-start leading-tight">
