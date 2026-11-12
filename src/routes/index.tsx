@@ -64,7 +64,7 @@ const DOWNLOAD_URL =
 const LINUX_URL =
   "https://github.com/lowcorelauncher/LowCore-Launcher-Source/releases/download/lowcorelinuxV.1.0.0/LowCoreLauncher-Linux.zip";
 const DISCORD_URL = "https://discord.gg/PxF3vqqstC";
-const GITHUB_URL = "https://github.com/lowcore/launcher";
+const GITHUB_URL = "https://github.com/lowcorelauncher/LowCore-Launcher-WEBSITE-";
 
 type VisitorOs = "unknown" | "windows" | "linux" | "other";
 
@@ -88,11 +88,13 @@ const secondaryButtonClass =
 function PlatformDownloadButtons() {
   const os = useVisitorOs();
   const linuxPrimary = os === "linux";
+  const [discordInvitationOpen, setDiscordInvitationOpen] = React.useState(false);
 
   const windowsButton = (
     <a
       href={DOWNLOAD_URL}
       download="LowCoreLauncherSetup.exe"
+      onClick={() => setDiscordInvitationOpen(true)}
       className={cn(
         "order-2 sm:order-none",
         linuxPrimary ? secondaryButtonClass : primaryButtonClass,
@@ -108,6 +110,9 @@ function PlatformDownloadButtons() {
 
   const linuxButton = (
     <LinuxDownloadButton
+      onDownloadInstructionsClosed={() => {
+        window.setTimeout(() => setDiscordInvitationOpen(true), 200);
+      }}
       className={cn(
         "order-1 sm:order-none",
         linuxPrimary ? primaryButtonClass : secondaryButtonClass,
@@ -116,23 +121,54 @@ function PlatformDownloadButtons() {
   );
 
   return (
-    <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-      {linuxPrimary ? (
-        <React.Fragment key="linux-first">
-          {linuxButton}
-          {windowsButton}
-        </React.Fragment>
-      ) : (
-        <React.Fragment key="windows-first">
-          {windowsButton}
-          {linuxButton}
-        </React.Fragment>
-      )}
-    </div>
+    <>
+      <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+        {linuxPrimary ? (
+          <React.Fragment key="linux-first">
+            {linuxButton}
+            {windowsButton}
+          </React.Fragment>
+        ) : (
+          <React.Fragment key="windows-first">
+            {windowsButton}
+            {linuxButton}
+          </React.Fragment>
+        )}
+      </div>
+      <Dialog open={discordInvitationOpen} onOpenChange={setDiscordInvitationOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="font-display">
+              Join the Discord for notifications about new updates?
+            </DialogTitle>
+            <DialogDescription>
+              Get LowCore release announcements and updates in the community server.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button variant="outline">Maybe later</Button>
+            </DialogClose>
+            <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
+              <a href={DISCORD_URL} target="_blank" rel="noopener noreferrer">
+                <MessageSquare className="h-4 w-4" />
+                Join Discord
+              </a>
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
 
-function LinuxDownloadButton({ className }: { className: string }) {
+function LinuxDownloadButton({
+  className,
+  onDownloadInstructionsClosed,
+}: {
+  className: string;
+  onDownloadInstructionsClosed: () => void;
+}) {
   const [open, setOpen] = React.useState(false);
   return (
     <>
@@ -148,7 +184,13 @@ function LinuxDownloadButton({ className }: { className: string }) {
           <span className="text-xs font-normal opacity-80">v1.0.0 (x64 .zip)</span>
         </span>
       </a>
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog
+        open={open}
+        onOpenChange={(nextOpen) => {
+          setOpen(nextOpen);
+          if (!nextOpen) onDownloadInstructionsClosed();
+        }}
+      >
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="font-display">Linux installation instructions</DialogTitle>
@@ -310,6 +352,15 @@ function Hero() {
             >
               <MessageSquare className="h-4 w-4 text-mint" />
               Join Discord Community
+            </a>
+            <a
+              href={GITHUB_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="glass-card card-lift ml-3 inline-flex items-center gap-2.5 rounded-xl px-5 py-2.5 text-sm font-semibold text-foreground"
+            >
+              <Github className="h-4 w-4" />
+              GitHub
             </a>
           </div>
         </div>
