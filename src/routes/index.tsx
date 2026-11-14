@@ -68,6 +68,16 @@ const GITHUB_URL = "https://github.com/lowcorelauncher/LowCore-Launcher-WEBSITE-
 
 type VisitorOs = "unknown" | "windows" | "linux" | "other";
 
+function startDirectDownload(url: string, filename: string) {
+  const downloadLink = document.createElement("a");
+  downloadLink.href = url;
+  downloadLink.download = filename;
+  downloadLink.rel = "noopener noreferrer";
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
+  downloadLink.remove();
+}
+
 function useVisitorOs(): VisitorOs {
   const [os, setOs] = React.useState<VisitorOs>("unknown");
   React.useEffect(() => {
@@ -94,7 +104,11 @@ function PlatformDownloadButtons() {
     <a
       href={DOWNLOAD_URL}
       download="LowCoreClientSetup.exe"
-      onClick={() => setDiscordInvitationOpen(true)}
+      onClick={(event) => {
+        event.preventDefault();
+        startDirectDownload(DOWNLOAD_URL, "LowCoreClientSetup.exe");
+        setDiscordInvitationOpen(true);
+      }}
       className={cn(
         "order-2 sm:order-none",
         linuxPrimary ? secondaryButtonClass : primaryButtonClass,
@@ -176,7 +190,11 @@ function LinuxDownloadButton({
         href={LINUX_URL}
         download="LowCoreLauncher-Linux.zip"
         className={className}
-        onClick={() => setOpen(true)}
+        onClick={(event) => {
+          event.preventDefault();
+          startDirectDownload(LINUX_URL, "LowCoreLauncher-Linux.zip");
+          setOpen(true);
+        }}
       >
         <LinuxIcon className="h-5 w-5" />
         <span className="flex flex-col items-start leading-tight">
