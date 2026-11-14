@@ -60,7 +60,7 @@ export const Route = createFileRoute("/")({
 });
 
 const DOWNLOAD_URL =
-  "https://github.com/lowcorelauncher/LowCore-Launcher-WEBSITE-/releases/download/v1.0.0/LowCoreLauncherSetup.exe";
+  "https://github.com/lowcorelauncher/LowCore-Launcher-WEBSITE-/releases/download/v1.1.0/LowCoreClientSetup.exe";
 const LINUX_URL =
   "https://github.com/lowcorelauncher/LowCore-Launcher-Source/releases/download/lowcorelinuxV.1.0.0/LowCoreLauncher-Linux.zip";
 const DISCORD_URL = "https://discord.gg/PxF3vqqstC";
@@ -93,7 +93,7 @@ function PlatformDownloadButtons() {
   const windowsButton = (
     <a
       href={DOWNLOAD_URL}
-      download="LowCoreLauncherSetup.exe"
+      download="LowCoreClientSetup.exe"
       onClick={(event) => {
         event.preventDefault();
         window.open(DOWNLOAD_URL, "_blank", "noopener,noreferrer");
@@ -107,7 +107,7 @@ function PlatformDownloadButtons() {
       <DownloadIcon className="h-5 w-5 transition-transform group-hover:translate-y-0.5" />
       <span className="flex flex-col items-start leading-tight">
         <span>Download for Windows (.exe)</span>
-        <span className="text-xs font-normal opacity-80">v1.0.0-Beta • Windows 64-bit</span>
+        <span className="text-xs font-normal opacity-80">v1.1.0 • Windows 64-bit</span>
       </span>
     </a>
   );
@@ -806,7 +806,7 @@ function Download() {
   const steps = [
     {
       title: "Download",
-      body: "Grab the installer for your platform — LowCoreLauncherSetup.exe on Windows or the Linux .zip.",
+      body: "Grab the installer for your platform — LowCoreClientSetup.exe v1.1.0 on Windows or the Linux .zip.",
     },
     {
       title: "Run the installer wizard",
