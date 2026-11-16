@@ -1,4 +1,5 @@
 - [x] Add Linux install.sh and Ubuntu troubleshooting guidance to the download popup; verify the download and popup flow.
 - [x] Add an interactive 14-theme launcher preview directly below the homepage hero.
 - [x] Add the supplied GitHub repository link and post-download Discord invitation for Windows and Linux.
-- [x] Replace the Windows installer URL and displayed version with the user's v1.1.0 release.
+- [x] Replace the Windows installer URL and displayed version with the user's v1.2.0 release.
+- [x] Replace the homepage launcher screenshot with the newly supplied image.
