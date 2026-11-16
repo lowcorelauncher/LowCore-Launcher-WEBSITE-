@@ -1,0 +1,315 @@
+name: Build LowCore Client (Linux & Windows)
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: 'Which platform(s) to build'
+        required: true
+        default: 'both'
+        type: choice
+        options:
+          - both
+          - linux
+          - windows
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-linux:
+    name: Build Linux (LowCoreClient-Linux.zip)
+    if: github.event_name != 'workflow_dispatch' || inputs.target == 'both' || inputs.target == 'linux'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Locate launcher source & overlay latest fixes
+        id: prep
+        run: |
+          if [ -f "launcher/main.py" ]; then
+            LAUNCHER_DIR="launcher"
+          elif [ -f "lowcorelauncher_LINUX/main.py" ]; then
+            LAUNCHER_DIR="lowcorelauncher_LINUX"
+          elif [ -f "main.py" ]; then
+            LAUNCHER_DIR="."
+          else
+            FOUND_MAIN="$(find . -maxdepth 2 -name main.py -not -path '*/.*' | head -n 1)"
+            if [ -n "$FOUND_MAIN" ]; then
+              LAUNCHER_DIR="$(dirname "$FOUND_MAIN" | sed 's|^\./||')"
+            else
+              echo "::error::Missing main.py! Copy main.py, requirements.txt, assets/, bundled/, and core/ into ./launcher/ or ./lowcorelauncher_LINUX/."
+              exit 1
+            fi
+          fi
+
+          echo "dir=$LAUNCHER_DIR" >> "$GITHUB_OUTPUT"
+          mkdir -p "$LAUNCHER_DIR/ui" "$LAUNCHER_DIR/core" "$LAUNCHER_DIR/assets"
+
+          if [ -d "public/downloads/ui" ]; then cp -f public/downloads/ui/*.py "$LAUNCHER_DIR/ui/"; fi
+          if [ -d "public/downloads/core" ]; then cp -f public/downloads/core/*.py "$LAUNCHER_DIR/core/"; fi
+          if [ -f "public/downloads/assets/rshift.png" ]; then cp -f public/downloads/assets/rshift.png "$LAUNCHER_DIR/assets/rshift.png"; fi
+          if [ -f "public/downloads/linux/install.sh" ]; then cp -f public/downloads/linux/install.sh "$LAUNCHER_DIR/install.sh"; fi
+          find "$LAUNCHER_DIR" -name "__pycache__" -type d -exec rm -rf {} + || true
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Linux build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y patchelf ccache libxcb-cursor0 libxkbcommon-x11-0 libegl1 libgl1 zip
+
+      - name: Install Python dependencies & Nuitka
+        run: |
+          LAUNCHER_DIR="${{ steps.prep.outputs.dir }}"
+          python -m pip install --upgrade pip
+          if [ -f "$LAUNCHER_DIR/requirements.txt" ]; then
+            grep -ivE '^(pywin32|pypiwin32|pywin32-ctypes|winshell|win10toast|comtypes|pyinstaller)([=<>!~ ]|$)' "$LAUNCHER_DIR/requirements.txt" > /tmp/req-linux.txt || true
+            if [ -s /tmp/req-linux.txt ]; then
+              pip install -r /tmp/req-linux.txt
+            fi
+          fi
+          pip install PyQt6 requests psutil pypresence minecraft-launcher-lib nuitka ordered-set zstandard
+
+      - name: Build standalone Linux binary with Nuitka
+        run: |
+          LAUNCHER_DIR="${{ steps.prep.outputs.dir }}"
+          cd "$LAUNCHER_DIR"
+          EXTRA_ARGS=""
+          if [ -d "bundled" ]; then
+            EXTRA_ARGS="$EXTRA_ARGS --include-data-dir=bundled=bundled"
+          fi
+          if [ -d "assets" ]; then
+            EXTRA_ARGS="$EXTRA_ARGS --include-data-dir=assets=assets"
+          fi
+          python -m nuitka \
+            --standalone \
+            --assume-yes-for-downloads \
+            --enable-plugin=pyqt6 \
+            --output-filename=LowCoreClient \
+            --output-dir=nuitka_linux_dist \
+            $EXTRA_ARGS \
+            main.py
+
+      - name: Package LowCoreClient-Linux.zip
+        run: |
+          LAUNCHER_DIR="${{ steps.prep.outputs.dir }}"
+          DIST_DIR="$(find "$LAUNCHER_DIR/nuitka_linux_dist" -maxdepth 1 -type d -name '*.dist' | head -n 1)"
+          if [ -z "$DIST_DIR" ]; then
+            echo "::error::Nuitka .dist output directory not found"
+            exit 1
+          fi
+          cp "$LAUNCHER_DIR/install.sh" "$DIST_DIR/install.sh"
+          chmod +x "$DIST_DIR/install.sh"
+          for bin in "$DIST_DIR/LowCoreClient" "$DIST_DIR/LowCoreClient.bin" "$DIST_DIR/main.bin" "$DIST_DIR/main"; do
+            [ -f "$bin" ] && chmod +x "$bin"
+          done
+          mkdir -p release_out_linux
+          ABS_OUT="$(pwd)/release_out_linux/LowCoreClient-Linux.zip"
+          (cd "$DIST_DIR" && zip -r "$ABS_OUT" .)
+          ls -lh "$ABS_OUT"
+
+      - name: Upload Linux artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: LowCoreClient-Linux
+          path: release_out_linux/LowCoreClient-Linux.zip
+
+  build-windows:
+    name: Build Windows (LowCoreClientSetup.exe)
+    if: github.event_name != 'workflow_dispatch' || inputs.target == 'both' || inputs.target == 'windows'
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Locate launcher source & overlay latest fixes
+        id: prep
+        shell: pwsh
+        run: |
+          if (Test-Path "launcher/main.py") {
+            $dir = "launcher"
+          } elseif (Test-Path "lowcorelauncher_LINUX/main.py") {
+            $dir = "lowcorelauncher_LINUX"
+          } elseif (Test-Path "main.py") {
+            $dir = "."
+          } else {
+            $found = Get-ChildItem -Path . -Filter "main.py" -Depth 1 -File -ErrorAction SilentlyContinue | Select-Object -First 1
+            if ($found) {
+              $dir = Split-Path -Parent $found.FullName | Resolve-Path -Relative
+            } else {
+              Write-Error "Missing main.py! Copy main.py, requirements.txt, assets/, bundled/, and core/ into ./launcher/ or ./lowcorelauncher_LINUX/."
+              exit 1
+            }
+          }
+          "dir=$dir" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+
+          New-Item -ItemType Directory -Force -Path "$dir/ui", "$dir/core", "$dir/assets" | Out-Null
+          if (Test-Path "public/downloads/ui") { Copy-Item -Force "public/downloads/ui/*.py" "$dir/ui/" }
+          if (Test-Path "public/downloads/core") { Copy-Item -Force "public/downloads/core/*.py" "$dir/core/" }
+          if (Test-Path "public/downloads/assets/rshift.png") {
+            Copy-Item -Force "public/downloads/assets/rshift.png" "$dir/assets/rshift.png"
+          }
+          Get-ChildItem -Path $dir -Directory -Filter "__pycache__" -Recurse | Remove-Item -Recurse -Force -ErrorAction SilentlyContinue
+
+          $verLine = Select-String -Path "$dir/core/version.py" -Pattern 'APP_VERSION\s*=\s*"([^"]+)"' | Select-Object -First 1
+          $appVer = if ($verLine) { $verLine.Matches[0].Groups[1].Value } else { "1.2" }
+          $parts = $appVer.Split('.')
+          while ($parts.Count -lt 4) { $parts += '0' }
+          $ver4 = ($parts[0..3] -join '.')
+          "app_ver=$appVer" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "ver4=$ver4" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Python dependencies & Nuitka
+        shell: pwsh
+        run: |
+          $dir = "${{ steps.prep.outputs.dir }}"
+          python -m pip install --upgrade pip
+          if (Test-Path "$dir/requirements.txt") {
+            pip install -r "$dir/requirements.txt"
+          }
+          pip install PyQt6 requests psutil pypresence minecraft-launcher-lib nuitka ordered-set zstandard
+
+      - name: Build standalone Windows binary with Nuitka
+        shell: pwsh
+        run: |
+          $dir = "${{ steps.prep.outputs.dir }}"
+          $ver4 = "${{ steps.prep.outputs.ver4 }}"
+          Push-Location $dir
+          $nuitkaArgs = @(
+            "-m", "nuitka",
+            "--standalone",
+            "--assume-yes-for-downloads",
+            "--enable-plugin=pyqt6",
+            "--windows-console-mode=disable",
+            "--output-filename=main.exe",
+            "--output-dir=nuitka_dist",
+            "--product-name=LowCore Client",
+            "--file-description=LowCore Client",
+            "--company-name=LowCore Studios",
+            "--file-version=$ver4",
+            "--product-version=$ver4"
+          )
+          if (Test-Path "assets/logo.ico") { $nuitkaArgs += "--windows-icon-from-ico=assets/logo.ico" }
+          if (Test-Path "assets") { $nuitkaArgs += "--include-data-dir=assets=assets" }
+          if (Test-Path "bundled") { $nuitkaArgs += "--include-data-dir=bundled=bundled" }
+          $nuitkaArgs += "main.py"
+          & python @nuitkaArgs
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          Pop-Location
+
+      - name: Build LowCoreClientSetup.exe with Inno Setup
+        shell: pwsh
+        run: |
+          $dir = "${{ steps.prep.outputs.dir }}"
+          $appVer = "${{ steps.prep.outputs.app_ver }}"
+          $ver4 = "${{ steps.prep.outputs.ver4 }}"
+          $distNode = Get-ChildItem "$dir/nuitka_dist" -Directory -Filter "*.dist" | Select-Object -First 1
+          if (-not $distNode) {
+            Write-Error "Nuitka .dist output directory not found"
+            exit 1
+          }
+          $distDir = $distNode.FullName
+          $outDir = Join-Path $env:GITHUB_WORKSPACE "release_out_win"
+          New-Item -ItemType Directory -Force -Path $outDir | Out-Null
+
+          $iscc = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
+          if (-not (Test-Path $iscc)) {
+            choco install innosetup -y --no-progress
+          }
+
+          $iconLine = ""
+          $iconParam = ""
+          $icoPath = Join-Path (Resolve-Path $dir).Path "assets\logo.ico"
+          if (Test-Path $icoPath) {
+            $iconLine = "SetupIconFile=$icoPath"
+            $iconParam = '; IconFilename: "{app}\assets\logo.ico"'
+          }
+
+          $iss = @"
+[Setup]
+AppId={{C78E4F10-5629-4B9A-992B-0E49D372861F}
+AppName=LowCore Client
+AppVersion=$appVer
+AppPublisher=LowCore Studios
+AppPublisherURL=https://github.com/lowcorelauncher/LowCore-Launcher-WEBSITE-
+AppSupportURL=https://github.com/lowcorelauncher/LowCore-Launcher-WEBSITE-
+AppUpdatesURL=https://github.com/lowcorelauncher/LowCore-Launcher-WEBSITE-/releases
+DefaultDirName={autopf}\LowCoreClient
+DefaultGroupName=LowCore Client
+OutputDir=$outDir
+OutputBaseFilename=LowCoreClientSetup
+$iconLine
+UninstallDisplayIcon={app}\main.exe
+Compression=lzma2
+SolidCompression=yes
+ArchitecturesAllowed=x64compatible
+ArchitecturesInstallIn64BitMode=x64compatible
+DisableProgramGroupPage=yes
+PrivilegesRequired=lowest
+WizardStyle=modern dynamic
+CloseApplications=force
+VersionInfoVersion=$ver4
+VersionInfoCompany=LowCore Studios
+VersionInfoDescription=LowCore Client Setup
+VersionInfoCopyright=Copyright (C) 2026 LowCore Studios
+VersionInfoProductName=LowCore Client
+VersionInfoProductVersion=$ver4
+
+[Tasks]
+Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
+
+[Files]
+Source: "$distDir\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+
+[Icons]
+Name: "{group}\LowCore Client"; Filename: "{app}\main.exe"; WorkingDir: "{app}"$iconParam
+Name: "{autodesktop}\LowCore Client"; Filename: "{app}\main.exe"; WorkingDir: "{app}"$iconParam; Tasks: desktopicon
+
+[Run]
+Filename: "{app}\main.exe"; WorkingDir: "{app}"; Description: "{cm:LaunchProgram,LowCore Client}"; Flags: nowait postinstall skipifsilent
+"@
+          $issPath = Join-Path $env:RUNNER_TEMP "lowcore_ci.iss"
+          $iss | Out-File -FilePath $issPath -Encoding utf8
+          & $iscc $issPath
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Upload Windows artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: LowCoreClient-Windows
+          path: release_out_win/LowCoreClientSetup.exe
+
+  publish-release:
+    name: Attach Windows & Linux to GitHub Release
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [build-linux, build-windows]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download built artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release_assets
+          merge-multiple: true
+
+      - name: Attach assets to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            release_assets/LowCoreClient-Linux.zip
+            release_assets/LowCoreClientSetup.exe
