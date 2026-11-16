@@ -62,7 +62,7 @@ export const Route = createFileRoute("/")({
 const DOWNLOAD_URL =
   "https://github.com/lowcorelauncher/LowCore-Launcher-Source/releases/download/v1.2.0/LowCoreClientSetup.exe";
 const LINUX_URL =
-  "https://github.com/lowcorelauncher/LowCore-Launcher-Source/releases/download/lowcorelinuxV.1.0.0/LowCoreLauncher-Linux.zip";
+  "https://github.com/lowcorelauncher/LowCore-Launcher-WEBSITE-/releases/download/linuxv1.2.0/LowCoreClient-Linux.zip";
 const DISCORD_URL = "https://discord.gg/PxF3vqqstC";
 const GITHUB_URL = "https://github.com/lowcorelauncher/LowCore-Launcher-WEBSITE-";
 
@@ -188,18 +188,18 @@ function LinuxDownloadButton({
     <>
       <a
         href={LINUX_URL}
-        download="LowCoreLauncher-Linux.zip"
+        download="LowCoreClient-Linux.zip"
         className={className}
         onClick={(event) => {
           event.preventDefault();
-          startDirectDownload(LINUX_URL, "LowCoreLauncher-Linux.zip");
+          startDirectDownload(LINUX_URL, "LowCoreClient-Linux.zip");
           setOpen(true);
         }}
       >
         <LinuxIcon className="h-5 w-5" />
         <span className="flex flex-col items-start leading-tight">
           <span>Download for Linux</span>
-          <span className="text-xs font-normal opacity-80">v1.0.0 (x64 .zip)</span>
+          <span className="text-xs font-normal opacity-80">v1.2.0 (x64 .zip)</span>
         </span>
       </a>
       <Dialog
