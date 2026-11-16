@@ -240,51 +240,51 @@ jobs:
             $iconParam = '; IconFilename: "{app}\assets\logo.ico"'
           }
 
-          $iss = @"
-[Setup]
-AppId={{C78E4F10-5629-4B9A-992B-0E49D372861F}
-AppName=LowCore Client
-AppVersion=$appVer
-AppPublisher=LowCore Studios
-AppPublisherURL=https://github.com/lowcorelauncher/LowCore-Launcher-WEBSITE-
-AppSupportURL=https://github.com/lowcorelauncher/LowCore-Launcher-WEBSITE-
-AppUpdatesURL=https://github.com/lowcorelauncher/LowCore-Launcher-WEBSITE-/releases
-DefaultDirName={autopf}\LowCoreClient
-DefaultGroupName=LowCore Client
-OutputDir=$outDir
-OutputBaseFilename=LowCoreClientSetup
-$iconLine
-UninstallDisplayIcon={app}\main.exe
-Compression=lzma2
-SolidCompression=yes
-ArchitecturesAllowed=x64compatible
-ArchitecturesInstallIn64BitMode=x64compatible
-DisableProgramGroupPage=yes
-PrivilegesRequired=lowest
-WizardStyle=modern dynamic
-CloseApplications=force
-VersionInfoVersion=$ver4
-VersionInfoCompany=LowCore Studios
-VersionInfoDescription=LowCore Client Setup
-VersionInfoCopyright=Copyright (C) 2026 LowCore Studios
-VersionInfoProductName=LowCore Client
-VersionInfoProductVersion=$ver4
-
-[Tasks]
-Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
-
-[Files]
-Source: "$distDir\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-
-[Icons]
-Name: "{group}\LowCore Client"; Filename: "{app}\main.exe"; WorkingDir: "{app}"$iconParam
-Name: "{autodesktop}\LowCore Client"; Filename: "{app}\main.exe"; WorkingDir: "{app}"$iconParam; Tasks: desktopicon
-
-[Run]
-Filename: "{app}\main.exe"; WorkingDir: "{app}"; Description: "{cm:LaunchProgram,LowCore Client}"; Flags: nowait postinstall skipifsilent
-"@
+          $issLines = @(
+            '[Setup]'
+            'AppId={{C78E4F10-5629-4B9A-992B-0E49D372861F}'
+            'AppName=LowCore Client'
+            "AppVersion=$appVer"
+            'AppPublisher=LowCore Studios'
+            'AppPublisherURL=https://github.com/lowcorelauncher/LowCore-Launcher-WEBSITE-'
+            'AppSupportURL=https://github.com/lowcorelauncher/LowCore-Launcher-WEBSITE-'
+            'AppUpdatesURL=https://github.com/lowcorelauncher/LowCore-Launcher-WEBSITE-/releases'
+            'DefaultDirName={autopf}\LowCoreClient'
+            'DefaultGroupName=LowCore Client'
+            "OutputDir=$outDir"
+            'OutputBaseFilename=LowCoreClientSetup'
+            $iconLine
+            'UninstallDisplayIcon={app}\main.exe'
+            'Compression=lzma2'
+            'SolidCompression=yes'
+            'ArchitecturesAllowed=x64compatible'
+            'ArchitecturesInstallIn64BitMode=x64compatible'
+            'DisableProgramGroupPage=yes'
+            'PrivilegesRequired=lowest'
+            'WizardStyle=modern dynamic'
+            'CloseApplications=force'
+            "VersionInfoVersion=$ver4"
+            'VersionInfoCompany=LowCore Studios'
+            'VersionInfoDescription=LowCore Client Setup'
+            'VersionInfoCopyright=Copyright (C) 2026 LowCore Studios'
+            'VersionInfoProductName=LowCore Client'
+            "VersionInfoProductVersion=$ver4"
+            ''
+            '[Tasks]'
+            'Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"'
+            ''
+            '[Files]'
+            ('Source: "' + $distDir + '\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs')
+            ''
+            '[Icons]'
+            ('Name: "{group}\LowCore Client"; Filename: "{app}\main.exe"; WorkingDir: "{app}"' + $iconParam)
+            ('Name: "{autodesktop}\LowCore Client"; Filename: "{app}\main.exe"; WorkingDir: "{app}"' + $iconParam + '; Tasks: desktopicon')
+            ''
+            '[Run]'
+            'Filename: "{app}\main.exe"; WorkingDir: "{app}"; Description: "{cm:LaunchProgram,LowCore Client}"; Flags: nowait postinstall skipifsilent'
+          )
           $issPath = Join-Path $env:RUNNER_TEMP "lowcore_ci.iss"
-          $iss | Out-File -FilePath $issPath -Encoding utf8
+          ($issLines -join "`r`n") | Out-File -FilePath $issPath -Encoding utf8
           & $iscc $issPath
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
