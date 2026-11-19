@@ -3,3 +3,6 @@
 - [x] Add the supplied GitHub repository link and post-download Discord invitation for Windows and Linux.
 - [x] Replace the Windows installer URL and displayed version with the user's v1.2.0 release.
 - [x] Replace the homepage launcher screenshot with the newly supplied image.
+- [ ] Rebrand the homepage as LowCore Client and refresh the hero and overall visual style.
+- [ ] Remove the interactive launcher/theme preview and replace it with a performance snapshot.
+- [ ] Update the client size and RAM claims to the user's confirmed values; add a regression test.

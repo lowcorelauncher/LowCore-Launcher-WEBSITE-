@@ -34,23 +34,30 @@ import {
   EyeOff,
   Infinity as InfinityIcon,
 } from "lucide-react";
-import { DEFAULT_LAUNCHER_THEME, LAUNCHER_THEMES } from "@/lib/launcher-themes";
 
+
+export const SITE_PRODUCT_NAME = "LowCore Client";
+
+export const PERFORMANCE_STATS = [
+  { value: "100 MB", label: "Client footprint", detail: "A compact install" },
+  { value: "~0.5 MB", label: "RAM at idle", detail: "When the client is idle" },
+  { value: "15–20 MB", label: "RAM in use", detail: "While the client is running" },
+] as const;
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "LowCore Launcher — Launch Faster. Play Smoother." },
+      { title: `${SITE_PRODUCT_NAME} — Launch Faster. Play Smoother.` },
       {
         name: "description",
         content:
-          "LowCore is an ultra-lightweight native Minecraft launcher: instant boot, pre-configured optimization mods, instance isolation, Modrinth integration and a clean 0/62 VirusTotal scan.",
+          "LowCore Client is a lightweight native Minecraft client with instant boot, optimized mods, isolated instances, Modrinth integration, and a clean 0/62 VirusTotal scan.",
       },
-      { property: "og:title", content: "LowCore Launcher — Launch Faster. Play Smoother." },
+      { property: "og:title", content: `${SITE_PRODUCT_NAME} — Launch Faster. Play Smoother.` },
       {
         property: "og:description",
         content:
-          "A bloat-free, native Minecraft launcher built for pure performance, instance isolation, and ultra-low RAM usage.",
+          "A lightweight native Minecraft client built for quick launches, easy mod management, and low memory use.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -248,6 +255,7 @@ const NAV_LINKS = [
   { label: "Features", href: "#features" },
   { label: "Mods", href: "#mods" },
   { label: "Customize", href: "#customize" },
+  { label: "Performance", href: "#performance" },
   { label: "Free", href: "#free" },
   { label: "Security", href: "#security" },
   { label: "Discord", href: DISCORD_URL, external: true },
@@ -292,7 +300,7 @@ function Logo() {
     <a href="#top" className="flex items-center gap-2.5">
       <img src="/lowcore-logo.png" alt="LowCore logo" className="h-8 w-8" />
       <span className="font-display text-lg font-bold tracking-tight text-foreground">
-        LowCore
+        LowCore Client
       </span>
       <span className="rounded-full bg-coral/15 px-2 py-0.5 font-display text-[10px] font-bold uppercase tracking-widest text-coral ring-1 ring-coral/30">
         Beta
@@ -333,70 +341,67 @@ function Hero() {
   return (
     <section id="top" className="hero-aurora relative overflow-hidden pt-16">
       <div className="grid-fade absolute inset-0" aria-hidden="true" />
-      <div className="relative mx-auto max-w-6xl px-4 pb-20 pt-16 sm:px-6 sm:pt-24">
-        <div className="mx-auto max-w-3xl text-center">
-          <div className="mb-6 flex flex-wrap items-center justify-center gap-2">
-            <span className="chip">Windows 64-bit Native</span>
-            <span className="chip chip-mint">
-              <ShieldCheck className="h-3.5 w-3.5" />
-              VirusTotal 0/62 Clean
-            </span>
-            <span className="chip">~90MB Footprint</span>
+      <div className="relative mx-auto max-w-6xl px-4 pb-16 pt-12 sm:px-6 sm:pb-20 sm:pt-20">
+        <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,0.88fr)_minmax(0,1.12fr)] lg:gap-10">
+          <div className="max-w-xl">
+            <div className="mb-6 flex flex-wrap gap-2">
+              <span className="chip">Native Minecraft client</span>
+              <span className="chip chip-mint">
+                <ShieldCheck className="h-3.5 w-3.5" />
+                VirusTotal 0/62
+              </span>
+              <span className="chip">100 MB footprint</span>
+            </div>
+            <h1 className="font-display text-5xl font-bold leading-[1.04] text-foreground sm:text-6xl">
+              LowCore
+              <br />
+              <span className="text-coral">Client.</span>
+            </h1>
+            <p className="mt-5 font-display text-xl font-semibold text-foreground sm:text-2xl">
+              Launch Faster. Play Smoother.
+            </p>
+            <p className="mt-4 max-w-lg text-base leading-relaxed text-muted-foreground sm:text-lg">
+              A lightweight, easy-to-use Minecraft client that keeps instances, mods, accounts,
+              and settings together — so you can get in and play without the busywork.
+            </p>
+            <div className="mt-8">
+              <PlatformDownloadButtons />
+            </div>
+            <div className="mt-4 flex flex-wrap gap-3">
+              <a
+                href={DISCORD_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="glass-card card-lift inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold text-foreground"
+              >
+                <MessageSquare className="h-4 w-4 text-mint" />
+                Join Discord
+              </a>
+              <a
+                href={GITHUB_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="glass-card card-lift inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold text-foreground"
+              >
+                <Github className="h-4 w-4" />
+                GitHub
+              </a>
+            </div>
           </div>
 
-          <h1 className="font-display text-5xl font-bold tracking-tight text-foreground sm:text-6xl md:text-7xl">
-            Launch Faster.
-            <br />
-            <span className="bg-gradient-to-r from-coral via-foreground to-foreground bg-clip-text text-transparent">
-              Play Smoother.
-            </span>
-          </h1>
-
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-            A bloat-free, native Minecraft launcher built for pure performance, instance
-            isolation, and ultra-low RAM usage. Lightning-fast, easy to use, and it handles
-            everything in one place.
-          </p>
-
-          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <PlatformDownloadButtons />
-          </div>
-          <div className="mt-4 flex justify-center">
-            <a
-              href={DISCORD_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="glass-card card-lift inline-flex items-center gap-2.5 rounded-xl px-5 py-2.5 text-sm font-semibold text-foreground"
-            >
-              <MessageSquare className="h-4 w-4 text-mint" />
-              Join Discord Community
-            </a>
-            <a
-              href={GITHUB_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="glass-card card-lift ml-3 inline-flex items-center gap-2.5 rounded-xl px-5 py-2.5 text-sm font-semibold text-foreground"
-            >
-              <Github className="h-4 w-4" />
-              GitHub
-            </a>
-          </div>
-        </div>
-
-        <div className="relative mx-auto mt-16 max-w-2xl sm:mt-20">
-          <div
-            className="animate-pulse-glow absolute -inset-8 rounded-[2rem] bg-coral/10 blur-3xl"
-            aria-hidden="true"
-          />
-          <div className="animate-float-soft flex flex-col items-center">
-            <div className="glass-card overflow-hidden rounded-t-2xl rounded-b-md shadow-2xl ring-1 ring-border">
+          <div className="relative mx-auto w-full max-w-2xl lg:max-w-none">
+            <div className="overflow-hidden rounded-lg border border-border bg-card shadow-2xl">
               <img
                 src="/launcher-hero.png"
-                alt="LowCore Launcher Play view with active instance, account, memory allocation, and PLAY button"
+                alt="LowCore Client Play screen showing its active Minecraft instance and launch controls"
                 width={922}
                 height={872}
                 className="block w-full"
               />
+            </div>
+            <div className="mt-3 flex items-center justify-between border-t border-border pt-3 text-xs text-muted-foreground">
+              <span>Everything you need, in one place.</span>
+              <span className="font-semibold text-coral">LOWCORE CLIENT / BETA</span>
             </div>
           </div>
         </div>
@@ -405,160 +410,37 @@ function Hero() {
   );
 }
 
-function LauncherThemePreview() {
-  const [activeThemeName, setActiveThemeName] = React.useState(DEFAULT_LAUNCHER_THEME.name);
-  const [activeTab, setActiveTab] = React.useState("Play");
-  const activeTheme = LAUNCHER_THEMES.find((theme) => theme.name === activeThemeName) ?? DEFAULT_LAUNCHER_THEME;
-  const themeStyle = {
-    "--launcher-bg": activeTheme.background,
-    "--launcher-surface": activeTheme.surface,
-    "--launcher-panel": activeTheme.panel,
-    "--launcher-border": activeTheme.border,
-    "--launcher-text": activeTheme.text,
-    "--launcher-muted": activeTheme.muted,
-    "--launcher-accent": activeTheme.accent,
-    "--launcher-accent-text": activeTheme.accentText,
-    "--launcher-success": activeTheme.success,
-  } as React.CSSProperties;
-  const launcherButtonStyle = {
-    backgroundColor: "var(--launcher-surface)",
-    borderColor: "var(--launcher-border)",
-    color: "var(--launcher-text)",
-  };
-
+function PerformanceSnapshot() {
   return (
-    <section className="border-y border-border bg-card/30 py-16 sm:py-20" aria-labelledby="theme-preview-title">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <div className="mx-auto max-w-3xl text-center">
+    <section
+      id="performance"
+      className="scroll-mt-20 border-y border-border bg-card/30 py-14 sm:py-20"
+      aria-labelledby="performance-title"
+    >
+      <div className="mx-auto grid max-w-6xl gap-9 px-4 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:gap-14">
+        <div className="max-w-md">
           <p className="font-display text-sm font-semibold uppercase tracking-widest text-coral">
-            Make LowCore yours
+            Performance snapshot
           </p>
-          <h2 id="theme-preview-title" className="mt-3 font-display text-3xl font-bold text-foreground sm:text-4xl">
-            Launcher UI &amp; Theme Previewer
+          <h2 id="performance-title" className="mt-3 font-display text-3xl font-bold text-foreground sm:text-4xl">
+            Lightweight by design.
           </h2>
-          <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">
-            Pick a built-in theme to preview the launcher instantly.
+          <p className="mt-4 leading-relaxed text-muted-foreground">
+            LowCore Client stays out of the way when you are not using it, and keeps its footprint
+            small while you play.
           </p>
         </div>
-
-        <div className="mt-8 flex flex-wrap justify-center gap-2" aria-label="Launcher themes">
-          {LAUNCHER_THEMES.map((theme) => {
-            const selected = activeThemeName === theme.name;
-            return (
-              <Button
-                key={theme.name}
-                type="button"
-                variant="outline"
-                aria-pressed={selected}
-                onClick={() => setActiveThemeName(theme.name)}
-                className="h-9 rounded-full px-3 text-xs transition-colors duration-300"
-                style={{
-                  backgroundColor: selected ? theme.surface : "transparent",
-                  borderColor: selected ? theme.accent : "var(--color-border)",
-                  color: selected ? theme.accent : "var(--color-muted-foreground)",
-                }}
-              >
-                {theme.name}
-              </Button>
-            );
-          })}
+        <div className="grid divide-y divide-border sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+          {PERFORMANCE_STATS.map((stat) => (
+            <div key={stat.label} className="py-5 sm:px-5 sm:py-2 lg:px-6">
+              <p className="text-xs font-semibold uppercase text-muted-foreground">{stat.label}</p>
+              <p className="mt-2 font-display text-4xl font-bold text-coral sm:text-3xl lg:text-4xl">
+                {stat.value}
+              </p>
+              <p className="mt-2 text-sm text-muted-foreground">{stat.detail}</p>
+            </div>
+          ))}
         </div>
-
-        <div
-          className="mt-8 overflow-hidden rounded-xl border shadow-2xl transition-colors duration-300"
-          style={{ ...themeStyle, backgroundColor: "var(--launcher-bg)", borderColor: "var(--launcher-border)" }}
-          aria-label={`${activeTheme.name} launcher preview`}
-        >
-          <header className="flex min-w-0 items-center justify-between gap-3 border-b px-4 py-3 sm:px-6" style={{ borderColor: "var(--launcher-border)" }}>
-            <div className="flex min-w-0 items-center gap-3">
-              <img src="/lowcore-logo.png" alt="" className="h-9 w-9 shrink-0 object-contain" />
-              <div className="min-w-0">
-                <div className="flex flex-wrap items-center gap-2">
-                  <h3 className="truncate font-display text-sm font-bold sm:text-base" style={{ color: "var(--launcher-text)" }}>
-                    LOWCORE LAUNCHER
-                  </h3>
-                  <span className="rounded px-1.5 py-0.5 text-[9px] font-bold tracking-widest" style={{ backgroundColor: "var(--launcher-accent)", color: "var(--launcher-accent-text)" }}>
-                    BETA
-                  </span>
-                </div>
-                <p className="text-[10px] font-semibold tracking-wide sm:text-xs" style={{ color: "var(--launcher-accent)" }}>
-                  EVERYTHING IN ONE
-                </p>
-              </div>
-            </div>
-            <div className="flex shrink-0 items-center gap-2">
-              <span className="hidden text-xs" style={{ color: "var(--launcher-muted)" }}>—</span>
-              <span className="hidden text-sm" style={{ color: "var(--launcher-muted)" }}>×</span>
-              <Button type="button" variant="outline" className="h-8 rounded-md px-2.5 text-[10px] font-semibold sm:h-9 sm:px-3 sm:text-xs" style={{ backgroundColor: "var(--launcher-surface)", borderColor: "var(--launcher-accent)", color: "var(--launcher-accent)" }}>
-                Kill Minecraft
-              </Button>
-            </div>
-          </header>
-
-          <nav className="flex gap-5 overflow-x-auto border-b px-4 sm:gap-8 sm:px-6" style={{ borderColor: "var(--launcher-border)" }} aria-label="Launcher preview tabs">
-            {["Play", "Content Browser", "Settings", "Console Log"].map((tab) => (
-              <button
-                key={tab}
-                type="button"
-                aria-pressed={activeTab === tab}
-                onClick={() => setActiveTab(tab)}
-                className="shrink-0 border-b-2 px-1 py-3 text-xs font-semibold transition-colors duration-300 sm:text-sm"
-                style={{ color: activeTab === tab ? "var(--launcher-text)" : "var(--launcher-muted)", borderColor: activeTab === tab ? "var(--launcher-accent)" : "transparent" }}
-              >
-                {tab}
-              </button>
-            ))}
-          </nav>
-
-          <div className="p-4 sm:p-6">
-            <div className="rounded-xl border p-4 sm:p-6" style={{ backgroundColor: "var(--launcher-surface)", borderColor: "var(--launcher-border)" }}>
-              <label className="text-xs font-semibold" style={{ color: "var(--launcher-muted)" }}>Active Isolated Instance</label>
-              <div className="mt-3 grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto_auto_auto]">
-                <Button type="button" variant="outline" className="h-11 min-w-0 justify-between rounded-lg px-3 text-left text-xs sm:px-4 sm:text-sm" style={launcherButtonStyle}>
-                  <span className="truncate">Main Shi&nbsp; · &nbsp;Fabric 1.21.11&nbsp; (47h 11m)</span><span className="ml-2 shrink-0">⌄</span>
-                </Button>
-                <Button type="button" variant="outline" aria-label="More instance options" className="hidden h-11 w-11 rounded-lg sm:inline-flex" style={launcherButtonStyle}>⋮</Button>
-                <Button type="button" variant="outline" className="h-11 rounded-lg px-3 text-xs sm:px-4 sm:text-sm" style={launcherButtonStyle}>+ New Instance</Button>
-                <Button type="button" variant="outline" className="h-11 rounded-lg px-3 text-xs sm:px-4 sm:text-sm" style={launcherButtonStyle}>⇧ Import</Button>
-              </div>
-
-              <div className="mt-5">
-                <label className="text-xs font-semibold" style={{ color: "var(--launcher-muted)" }}>Account</label>
-                <div className="mt-3 grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto_auto]">
-                  <Button type="button" variant="outline" className="h-11 min-w-0 justify-between rounded-lg px-3 text-left text-xs sm:px-4 sm:text-sm" style={launcherButtonStyle}>
-                    <span className="truncate">🟦&nbsp; Javero&nbsp; · &nbsp;Microsoft</span><span className="ml-2 shrink-0">⌄</span>
-                  </Button>
-                  <Button type="button" variant="outline" className="h-11 rounded-lg px-3 text-xs sm:px-5 sm:text-sm" style={launcherButtonStyle}>+ Offline</Button>
-                  <Button type="button" variant="outline" className="h-11 rounded-lg px-3 text-xs sm:px-5 sm:text-sm" style={launcherButtonStyle}>+ Microsoft</Button>
-                </div>
-              </div>
-
-              <div className="mt-5">
-                <label className="text-xs font-semibold" style={{ color: "var(--launcher-muted)" }}>Global High-Performance Memory Allocation</label>
-                <Button type="button" variant="outline" className="mt-3 h-11 w-full justify-between rounded-lg px-3 text-left text-xs sm:px-4 sm:text-sm" style={launcherButtonStyle}>
-                  <span>4096 MB (4 GB - Recommended)</span><span>⌄</span>
-                </Button>
-              </div>
-            </div>
-
-            <p className="mt-6 text-center text-sm font-semibold tracking-wide" style={{ color: "var(--launcher-success)" }}>Ready to launch</p>
-            <Button type="button" className="mt-3 h-14 w-full rounded-lg text-base font-extrabold tracking-wide transition-colors duration-300 sm:h-16" style={{ backgroundColor: "var(--launcher-accent)", color: "var(--launcher-accent-text)" }}>PLAY</Button>
-
-            <div className="mt-3 grid grid-cols-3 gap-2 sm:gap-3">
-              {[
-                { label: "PLAYTIME", value: "47h 11m" },
-                { label: "MODS", value: "41" },
-                { label: "LAST PLAYED", value: "20h ago" },
-              ].map((stat) => (
-                <div key={stat.label} className="min-w-0 rounded-lg border px-2.5 py-3 sm:px-4" style={{ backgroundColor: "var(--launcher-surface)", borderColor: "var(--launcher-border)" }}>
-                  <p className="truncate text-[9px] font-semibold sm:text-xs" style={{ color: "var(--launcher-muted)" }}>{stat.label}</p>
-                  <p className="mt-1 truncate text-xs font-bold sm:text-base" style={{ color: "var(--launcher-text)" }}>{stat.value}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-        <p className="mt-3 text-center text-xs text-muted-foreground" aria-live="polite">Previewing {activeTheme.name}</p>
       </div>
     </section>
   );
@@ -720,7 +602,7 @@ function Customization() {
           <div className="glass-card card-lift overflow-hidden rounded-2xl shadow-2xl">
             <img
               src="/launcher-settings.png"
-              alt="LowCore Launcher Settings tab with client theme, window resolution, logging and custom folder options"
+              alt="LowCore Client settings screen with theme, window resolution, logging, and custom folder options"
               width={893}
               height={796}
               className="block w-full"
@@ -732,7 +614,7 @@ function Customization() {
   );
 }
 
-function Performance() {
+function FreeSection() {
   return (
     <section
       id="free"
@@ -908,11 +790,11 @@ function Index() {
       <Navbar />
       <main>
         <Hero />
-        <LauncherThemePreview />
+        <PerformanceSnapshot />
         <Features />
         <ModsSection />
         <Customization />
-        <Performance />
+        <FreeSection />
         <Security />
         <Download />
       </main>
