@@ -51,7 +51,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "LowCore Client is a lightweight native Minecraft client with instant boot, optimized mods, isolated instances, Modrinth integration, and a clean 0/62 VirusTotal scan.",
+          "LowCore Client is a lightweight native Minecraft client with instant boot, automatic full optimization, isolated instances, Modrinth integration, and a clean 0/62 VirusTotal scan.",
       },
       { property: "og:title", content: `${SITE_PRODUCT_NAME} — Launch Faster. Play Smoother.` },
       {
@@ -67,9 +67,9 @@ export const Route = createFileRoute("/")({
 });
 
 const DOWNLOAD_URL =
-  "https://github.com/lowcorelauncher/LowCore-Launcher-Source/releases/download/v1.2.0/LowCoreClientSetup.exe";
+  "https://github.com/lowcorelauncher/LowCore-Launcher-WEBSITE-/releases/latest/download/LowCoreClientSetup.exe";
 const LINUX_URL =
-  "https://github.com/lowcorelauncher/LowCore-Launcher-WEBSITE-/releases/download/linuxv1.2.0/LowCoreClient-Linux.zip";
+  "https://github.com/lowcorelauncher/LowCore-Launcher-WEBSITE-/releases/latest/download/LowCoreClient-Linux.zip";
 const DISCORD_URL = "https://discord.gg/PxF3vqqstC";
 const GITHUB_URL = "https://github.com/lowcorelauncher/LowCore-Launcher-WEBSITE-";
 
@@ -124,7 +124,7 @@ function PlatformDownloadButtons() {
       <DownloadIcon className="h-5 w-5 transition-transform group-hover:translate-y-0.5" />
       <span className="flex flex-col items-start leading-tight">
         <span>Download for Windows (.exe)</span>
-        <span className="text-xs font-normal opacity-80">v1.2.0 • Windows 64-bit</span>
+        <span className="text-xs font-normal opacity-80">v1.3 • Windows 64-bit</span>
       </span>
     </a>
   );
@@ -206,7 +206,7 @@ function LinuxDownloadButton({
         <LinuxIcon className="h-5 w-5" />
         <span className="flex flex-col items-start leading-tight">
           <span>Download for Linux</span>
-          <span className="text-xs font-normal opacity-80">v1.2.0 (x64 .zip)</span>
+          <span className="text-xs font-normal opacity-80">v1.3 (x64 .zip)</span>
         </span>
       </a>
       <Dialog
@@ -269,13 +269,13 @@ const FEATURES = [
   },
   {
     icon: Gauge,
-    title: "Built-in Optimization Stack",
-    body: "Pre-configured with Sodium, Lithium, and FerriteCore for maximum FPS.",
+    title: "Automatic Full Optimization",
+    body: "Automatically equips Sodium, Lithium, FerriteCore, and performance mods with zero duplicates.",
   },
   {
     icon: Layers,
     title: "Instance Isolation",
-    body: "Keep separate mods, configs, and worlds without corrupting standard folders.",
+    body: "Keep separate mods, configs, and worlds — or import from Lunar, Prism, Modrinth & more.",
   },
   {
     icon: UsersRound,
@@ -285,7 +285,7 @@ const FEATURES = [
   {
     icon: PackageSearch,
     title: "Modrinth Integration",
-    body: "Search and download compatible mods directly inside the client.",
+    body: "Search mods with full hover previews, Read More details, and one-click installs.",
   },
   {
     icon: ShieldCheck,
@@ -301,9 +301,6 @@ function Logo() {
       <img src="/lowcore-logo.png" alt="LowCore logo" className="h-8 w-8" />
       <span className="font-display text-lg font-bold tracking-tight text-foreground">
         LowCore Client
-      </span>
-      <span className="rounded-full bg-coral/15 px-2 py-0.5 font-display text-[10px] font-bold uppercase tracking-widest text-coral ring-1 ring-coral/30">
-        Beta
       </span>
     </a>
   );
@@ -401,7 +398,7 @@ function Hero() {
             </div>
             <div className="mt-3 flex items-center justify-between border-t border-border pt-3 text-xs text-muted-foreground">
               <span>Everything you need, in one place.</span>
-              <span className="font-semibold text-coral">LOWCORE CLIENT / BETA</span>
+              <span className="font-semibold text-coral">LOWCORE CLIENT / v1.3</span>
             </div>
           </div>
         </div>
@@ -698,7 +695,7 @@ function Download() {
   const steps = [
     {
       title: "Download",
-      body: "Grab the installer for your platform — LowCoreClientSetup.exe v1.2.0 on Windows or the Linux .zip.",
+      body: "Grab the installer for your platform — LowCoreClientSetup.exe v1.3 on Windows or the Linux .zip.",
     },
     {
       title: "Run the installer wizard",
