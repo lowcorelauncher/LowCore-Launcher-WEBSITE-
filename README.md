@@ -9,6 +9,7 @@ A lightweight, bloat-free Minecraft launcher built for low-end PCs and laptops.
 - Available for **Windows** and **Linux**
 
 **Website:** https://lowcore.vercel.app
+<img width="938" height="892" alt="image" src="https://github.com/user-attachments/assets/2965c915-5573-450b-8546-626405fd7414" />
 
 ---
 
